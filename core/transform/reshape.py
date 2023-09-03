@@ -5,8 +5,11 @@ from pyspark.sql.functions import to_json
 from .date import withDate
 
 def withReshape(df):
+    if "name" in (col for col in df.columns):
+        df = df.withColumnRenamed('name', 'event_name')
+    else:
+        df = df.withColumn('event_name', lit(None))
     return df \
-    .withColumnRenamed('name', 'event_name') \
     .withColumnRenamed('uuid', 'event_id') \
     .withColumnRenamed('userId', 'user_id') \
     .withColumnRenamed('createdAt', 'dt_created') \

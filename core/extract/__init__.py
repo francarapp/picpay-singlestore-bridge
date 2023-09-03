@@ -1,1 +1,1 @@
-from .stream import createStream, writeStream
+from .stream import Stream, Sink

@@ -4,11 +4,11 @@ from pyspark.sql.functions import to_json
 
 from .date import withDate
 
-def withReshape(df):
+def withReshape(df, evname):
     if "name" in (col for col in df.columns):
         df = df.withColumnRenamed('name', 'event_name')
     else:
-        df = df.withColumn('event_name', lit(None))
+        df = df.withColumn('event_name', lit(evname))
     return df \
     .withColumnRenamed('uuid', 'event_id') \
     .withColumnRenamed('userId', 'user_id') \
@@ -29,10 +29,10 @@ def withReshape(df):
     .withColumn('context', to_json(col('context'))) \
     .withColumn('properties', to_json(col('properties'))) 
 
-def Shape(df):
+def Shape(df, name="UNDEFINED"):
     return withDate(
         withDate(
-            withReshape(df), 
+            withReshape(df, name), 
             'dt_created'
         ), 'dt_received'
     ).select(

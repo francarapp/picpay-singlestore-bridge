@@ -4,8 +4,8 @@ import datetime
 
 # "s3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/track-events-approved/"
 
-def Stream(file):
-    return createStream(file, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"))
+def Stream(file, dt=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")):
+    return createStream(file, dt)
 
 def createStream(file, starting):
     return session.spark\

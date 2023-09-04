@@ -6,7 +6,7 @@ def Filter(df):
             filterNull( 
                 filterNull(df, "user_id"), 
             "event_id"), 
-        "properties", 10000000),
+        "properties", 100000),
     "2023")
 
 def filterYear(df, year):

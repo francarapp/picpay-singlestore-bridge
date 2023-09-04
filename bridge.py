@@ -10,7 +10,7 @@ from conf import partitionby, partitionEvName
 import logging
 log = logging.getLogger(__name__)
 
-def Bridge(landing, table, partitions=[], console=False, debug=false):
+def Bridge(landing, table, partitions=[], console=False, debug=False):
     partitionedby = ""
     evname = landing
     if len(partitions) > 0:
@@ -32,6 +32,7 @@ def Bridge(landing, table, partitions=[], console=False, debug=false):
         return SinkToConsole(stream)
     
     if debug:
+        log.debug("Streamming to SS using foreach")
         return SinkForeachToSS(stream, table)
     
     log.info("Streamming to SS")

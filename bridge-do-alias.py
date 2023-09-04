@@ -11,6 +11,7 @@ import logging
 
 def conf():
     initlog()
+    
 def main():
     stream = Bridge("alias", "alias")
     stream = stream.start()

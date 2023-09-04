@@ -13,11 +13,14 @@ def Stream(file):
     return createStream(file, dttm.strftime("%Y-%m-%d %H:%M:%S.%f")[:23])
 
 def createStream(file, starting):
-    return session.spark\
+    stream = session.spark\
         .readStream.format("delta")\
             .option("maxBytesPerTrigger", 10485760)\
             .option("startingTimestamp", starting) \
         .load(file)
+    log.info(f"Stream created from file {file}")
+    stream.printSchema()
+    return stream
 
 def SinkToS3(stream, evgroup):
     return stream.writeStream\

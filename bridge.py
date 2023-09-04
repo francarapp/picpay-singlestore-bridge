@@ -25,8 +25,8 @@ def Bridge(landing, table, partitions=[], console=False):
     )
     
     if console:
-        log.Info("Streamming to console")
+        log.info("Streamming to console")
         return SinkToConsole(stream)
     
-    log.Info("Streamming to SS")
+    log.info("Streamming to SS")
     return SinkToSS(stream, table)

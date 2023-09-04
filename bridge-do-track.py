@@ -6,10 +6,11 @@ from bridge import Bridge
 from conf import args, initlog, partitionElements
 
 from datetime import datetime, timedelta
+import sys
 
 def conf():
     initlog()
-    args()
+    args(sys.argv[1:])
     
 
 def main():

@@ -2,9 +2,8 @@ import sys
 
 partitionElements = []
 
-def args():
+def args(argv):
     global partitionElements
-    argv = sys.argv[1:]
     if len(argv) < 4:
         print("argumentos da particao nao localizados.")
         exit(1)

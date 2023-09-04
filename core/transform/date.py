@@ -25,5 +25,5 @@ def withTimeslice(df):
     return df.withColumn('ano', date_format(col('dt_created'), 'yyyy')) \
         .withColumn('mes', date_format(col('dt_created'), 'MM')) \
         .withColumn('dia', date_format(col('dt_created'), 'dd')) \
-        .withColumn('hora', date_format(col('dt_created'), 'hh')) \
+        .withColumn('hora', date_format(col('dt_created'), 'HH')) \
         .withColumn('minuto', date_format(col('dt_created'), 'mm')) 

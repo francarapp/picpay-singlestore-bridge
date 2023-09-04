@@ -5,12 +5,13 @@ import datetime
 # "s3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/track-events-approved/"
 
 def Stream(file):
-    return createStream(file, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:23])
+    dttm =  datetime.now() - datetime.timedelta(hours=1)
+    return createStream(file, dttm.strftime("%Y-%m-%d %H:%M:%S.%f")[:23])
 
 def createStream(file, starting):
     return session.spark\
         .readStream.format("delta")\
-            .option("maxBytesPerTrigger", 10485760)\
+            .option("maxBytesPerTrigger", 40485760)\
             .option("startingTimestamp", starting) \
         .load(file)
 

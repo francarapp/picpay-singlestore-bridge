@@ -8,5 +8,5 @@ def args(argv):
         print("argumentos da particao nao localizados.")
         exit(1)
         
-    partitionElements = [argv[0], argv[1], argv[2], argv[3]]
+    partitionElements.append(argv)
 

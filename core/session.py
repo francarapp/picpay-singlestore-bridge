@@ -17,6 +17,7 @@ def init():
     spark.conf.set("spark.datasource.singlestore.password", "singlestore")
     spark.conf.set("spark.datasource.singlestore.database", "events")
     spark.conf.set("spark.datasource.singlestore.overwriteBehavior", "merge")
+    spark.conf.set("spark.datasource.singlestore.maxErrors", 1000)
 
     context = spark.sparkContext    
     context.setLogLevel("ERROR")

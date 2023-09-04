@@ -15,7 +15,7 @@ def Stream(file):
 def createStream(file, starting):
     return session.spark\
         .readStream.format("delta")\
-            .option("maxBytesPerTrigger", 40485760)\
+            .option("maxBytesPerTrigger", 10485760)\
             .option("startingTimestamp", starting) \
         .load(file)
 

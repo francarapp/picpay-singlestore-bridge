@@ -4,23 +4,26 @@ import datetime
 
 # "s3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/track-events-approved/"
 
-def Stream(file, dt=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")):
-    return createStream(file, dt)
+def Stream(file):
+    return createStream(file, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:23])
 
 def createStream(file, starting):
     return session.spark\
         .readStream.format("delta")\
-            .option("maxBytesPerTrigger", 40485760)\
+            .option("maxBytesPerTrigger", 10485760)\
             .option("startingTimestamp", starting) \
         .load(file)
 
-def Sink(s3):
-    #.partitionBy("mes", "dia", "hora", "min", "event_name")
-    return df.writeStream \
-        .option("path", s3) \
-        .mode("overwrite") \
-        .format('parquet')
+def SinkToS3(stream, evgroup):
+    return stream.writeStream\
+        .option("checkpointLocation", f"/home/spark/checkpoint/{evgroup}")\
+        .option("path", f"s3a://picpay-dataeng-singlestore-landing/events/{evgroup}")\
+        .partitionBy("ano","mes", "dia", "hora", "minuto")\
+        .format("parquet")
 
     
-def writeStream(df, format):
-    return df.writeStream.format(format)
+def SinkToSS(stream, evgroup):
+    def saveSS(df, epoch):
+        df.drop('ano', 'mes', 'dia', 'hora', 'minuto').write.format("singlestore").mode("append").save(evgroup)
+        
+    return stream.writeStream.foreachBatch(saveSS)

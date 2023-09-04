@@ -12,6 +12,10 @@ def init():
         .builder\
         .appName("PythonWordCount")\
         .getOrCreate()
-
+    spark.conf.set("spark.datasource.singlestore.clientEndpoint", "10.164.47.110:3306")
+    spark.conf.set("spark.datasource.singlestore.user", "root")
+    spark.conf.set("spark.datasource.singlestore.password", "singlestore")
+    spark.conf.set("spark.datasource.singlestore.database", "events")
+    
     context = spark.sparkContext    
     context.setLogLevel("ERROR")

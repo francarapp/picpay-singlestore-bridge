@@ -10,7 +10,7 @@ def Stream(file, dt=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")):
 def createStream(file, starting):
     return session.spark\
         .readStream.format("delta")\
-            .option("maxBytesPerTrigger", 10485760)\
+            .option("maxBytesPerTrigger", 40485760)\
             .option("startingTimestamp", starting) \
         .load(file)
 

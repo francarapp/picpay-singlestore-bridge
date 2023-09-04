@@ -32,10 +32,10 @@ def SinkToSS(stream, evgroup):
         
         df.drop('ano', 'mes', 'dia', 'hora', 'minuto')\
             .filter(length(col("properties")) < 1000)\
-            .write.format("singlestore").mode("overwrite")\
+            .write.format("singlestore").mode("append")\
             .save(evgroup)
         
-        if epoch%5 == 0 and log.isEnabledFor(logging.DEBUG):
-            log.debug(f'DataFrame epoch:{"{:,}".format(epoch)} size: {df.count()}')
+        if epoch%15 == 0 and log.isEnabledFor(logging.DEBUG):
+            log.debug(f'DataFrame epoch:{"{:,}".format(epoch)} size: {"{:,}".format(df.count())}')
         
     return stream.writeStream.foreachBatch(saveSS)

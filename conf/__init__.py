@@ -1,1 +1,1 @@
-from meta import partitionby
+from .meta import partitionby

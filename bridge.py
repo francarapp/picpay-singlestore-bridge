@@ -5,7 +5,7 @@ from pyspark.sql import SparkSession
 from core.extract import Stream, SinkToSS, SinkToConsole
 from core.transform import  Shape
 from core.filter import Filter
-from core.conf import partitionby
+from conf import partitionby
 
 import logging
 log = logging.getLogger(__name__)

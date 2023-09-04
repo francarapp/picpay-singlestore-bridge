@@ -15,4 +15,4 @@ def Bridge(landing, singlestore, since):
         .option("path", f"s3a://picpay-dataeng-singlestore-landing/events/{singlestore}")\
         .partitionBy("ano","mes", "dia", "hora", "minuto")\
         .format("parquet")
-    stream.start()
+    return stream

@@ -11,6 +11,11 @@ def withReshape(df, evname):
         df = df.withColumnRenamed('name', 'event_name')
     else:
         df = df.withColumn('event_name', lit(evname))
+    df = df.withColumn("userId",
+        when(
+            col("userId").isNull(), col("anonymousId")
+        ).otherwise(col("userId"))
+)
     return df \
     .withColumnRenamed('uuid', 'event_id') \
     .withColumnRenamed('userId', 'user_id') \

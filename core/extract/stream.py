@@ -28,11 +28,10 @@ def SinkToS3(stream, evgroup):
     
 def SinkToSS(stream, evgroup):
     def saveSS(df, epoch):
-        log.info(f"Sinking epoch:{epoch}")
         
         df.drop('ano', 'mes', 'dia', 'hora', 'minuto').write.format("singlestore").mode("append").save(evgroup)
         
-        if log.isEnabledFor(logging.DEBUG):
-            log.debug(f"DataFrame epoch:{epoch} size{df.count()}")
+        if epoch%10 == 0 and log.isEnabledFor(logging.DEBUG):
+            log.debug(f'DataFrame epoch:{"{:,}".format(epoch)} size: {df.count()}')
         
     return stream.writeStream.foreachBatch(saveSS)

@@ -3,12 +3,13 @@ from pyspark.sql.functions import when, coalesce
 from pyspark.sql.functions import to_json
 
 from .date import withDate, withTimeslice
-from .columns import withName
+from .columns import withEventName
 
 import datetime
 
 def withReshape(df, evname):
-    df = withName(df, "evname")        
+    df = withEventName(df, evname)
+    
     df = df.withColumn("userId",
         when(
             col("userId").isNull(), col("anonymousId")

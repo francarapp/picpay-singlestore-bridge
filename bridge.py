@@ -2,7 +2,7 @@ import sys
 
 from pyspark.sql import SparkSession
 
-from core.extract import Stream, SinkToSS, SinkToConsole
+from core.extract import Stream, SinkToSS, SinkToConsole, SinkForeachToSS
 from core.transform import  Shape
 from core.filter import Filter
 from conf import partitionby, partitionEvName
@@ -10,7 +10,7 @@ from conf import partitionby, partitionEvName
 import logging
 log = logging.getLogger(__name__)
 
-def Bridge(landing, table, partitions=[], console=False):
+def Bridge(landing, table, partitions=[], console=False, debug=false):
     partitionedby = ""
     evname = landing
     if len(partitions) > 0:
@@ -30,6 +30,9 @@ def Bridge(landing, table, partitions=[], console=False):
     if console:
         log.info("Streamming to console")
         return SinkToConsole(stream)
+    
+    if debug:
+        return SinkForeachToSS(stream, table)
     
     log.info("Streamming to SS")
     return SinkToSS(stream, table)

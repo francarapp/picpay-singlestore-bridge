@@ -3,18 +3,17 @@ from pyspark.streaming import StreamingContext
 
 from core import session
 from bridge import Bridge
+from conf import args, initlog, partitionElements
+
 from datetime import datetime, timedelta
 
-import logging
-
 def conf():
-    logging.basicConfig(format='[%(levelname)s] %(asctime)s {%(module)s} - %(message)s', level=logging.INFO)
-    logging.getLogger("core.extract.stream").setLevel(logging.DEBUG)
-    logging.getLogger('pyspark').setLevel(logging.ERROR)
-    logging.getLogger("py4j").setLevel(logging.ERROR)
+    initlog()
+    args()
+    
 
 def main():
-    stream = Bridge("track", "track")
+    stream = Bridge("track", "track", partitions=partitionElements)
     stream = stream.start()
     stream.awaitTermination()
 

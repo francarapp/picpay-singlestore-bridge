@@ -7,8 +7,6 @@ from conf import initlog
 
 from datetime import datetime, timedelta
 
-import logging
-
 def conf():
     initlog()
 

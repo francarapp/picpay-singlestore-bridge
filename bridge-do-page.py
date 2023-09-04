@@ -3,14 +3,13 @@ from pyspark.streaming import StreamingContext
 
 from core import session
 from bridge import Bridge
-from conf import initlog
+from conf import args, initlog
 
 from datetime import datetime, timedelta
 
-import logging
-
 def conf():
     initlog()
+    args()
 
 def main():
     stream = Bridge("page", "page")

@@ -3,15 +3,14 @@ from pyspark.streaming import StreamingContext
 
 from core import session
 from bridge import Bridge
+from conf import initlog
+
 from datetime import datetime, timedelta
 
 import logging
 
 def conf():
-    logging.basicConfig(format='[%(levelname)s] %(asctime)s {%(module)s} - %(message)s', level=logging.INFO)
-    logging.getLogger("core.extract.stream").setLevel(logging.DEBUG)
-    logging.getLogger('pyspark').setLevel(logging.ERROR)
-    logging.getLogger("py4j").setLevel(logging.ERROR)
+    initlog()
 
 def main():
     stream = Bridge("screen", "screen")

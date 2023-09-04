@@ -10,7 +10,7 @@ def init():
     global spark, context
     spark = SparkSession\
         .builder\
-        .appName("PythonWordCount")\
+        .appName("ET2SSBridge")\
         .getOrCreate()
     spark.conf.set("spark.datasource.singlestore.clientEndpoint", "10.164.47.110:3306")
     spark.conf.set("spark.datasource.singlestore.user", "root")

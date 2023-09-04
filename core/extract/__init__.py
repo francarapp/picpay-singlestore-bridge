@@ -1,1 +1,1 @@
-from .stream import Stream, SinkToS3, SinkToSS, LogToConsole
+from .stream import Stream, SinkToS3, SinkToSS, SinkToConsole

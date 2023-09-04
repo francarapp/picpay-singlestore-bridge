@@ -40,5 +40,5 @@ def SinkToSS(stream, evgroup):
         
     return stream.writeStream.foreachBatch(saveSS)
 
-def LogToConsole(stream):
+def SinkToConsole(stream):
     return stream.writeStream.format("console")

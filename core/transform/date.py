@@ -20,3 +20,10 @@ def withDate(df, column):
                 "yyyy-MM-dd HH:mm:ss.SSS"
             )
         ).drop(col(column + "_ts"), col(column+"_tz"))
+
+def withTimeslice(df):
+    return df.withColumn('ano', date_format(col('dt_created'), 'yyyy')) \
+        .withColumn('mes', date_format(col('dt_created'), 'MM')) \
+        .withColumn('dia', date_format(col('dt_created'), 'dd')) \
+        .withColumn('hora', date_format(col('dt_created'), 'hh')) \
+        .withColumn('minuto', date_format(col('dt_created'), 'mm')) 

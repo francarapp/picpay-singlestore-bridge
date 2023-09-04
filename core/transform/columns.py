@@ -7,3 +7,4 @@ def withName(df, name):
     elif "former_event_name" in (col for col in df.columns):
         return df.withColumn('name', col('former_event_name'))
     return df.withColumn('name', lit(name))
+

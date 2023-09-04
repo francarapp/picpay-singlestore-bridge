@@ -8,7 +8,8 @@ from datetime import datetime, timedelta
 import logging
 
 def conf():
-    logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s', level=logging.INFO)
+    logging.getLogger("core.extract.stream").setLevel(logging.DEBUG)
 
 def main():
     stream = Bridge("screen", "screen")

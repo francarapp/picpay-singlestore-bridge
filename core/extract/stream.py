@@ -3,7 +3,7 @@ from core import session
 from datetime import datetime, timedelta
 
 import logging
-log = logging.getLogger(__name__)
+log = logging.getLogger('core.extract.stream')
 
 # "s3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/track-events-approved/"
 

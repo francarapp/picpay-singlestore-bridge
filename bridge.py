@@ -16,6 +16,7 @@ def Bridge(landing, table, partitions=[], console=False):
     if len(partitions) > 0:
         partitionedby = partitionby(landing, partitions)
         evname = partitionEvName(landing, partitions)
+        log.info(f"Using {landing} partition event {evname}")
         
     source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
     

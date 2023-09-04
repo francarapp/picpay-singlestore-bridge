@@ -2,11 +2,9 @@ from pyspark.sql.functions import col, length
 
 def Filter(df):
     return filterYear(
-        filterLength(
             filterNull( 
                 filterNull(df, "user_id"), 
             "event_id"), 
-        "properties", 100000),
     "2023")
 
 def filterYear(df, year):

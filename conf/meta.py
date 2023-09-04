@@ -15,4 +15,4 @@ def partitionby(event, values):
     part = Meta[event]
     if part is None:
         return []
-    return "/".join([f"{e[0]}={e[1]}" for e in zip(part, values)])
+    return "/".join([f"{e[0]}={e[1]}" for e in zip(part['partitions'], values)])

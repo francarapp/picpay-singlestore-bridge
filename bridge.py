@@ -20,7 +20,7 @@ def Bridge(landing, table, partitions=[], console=False):
     log.info(f"Bridging from {source} to {table}")
     stream = Filter(
         Shape(
-            Stream(source)
+            Stream(source), name=landing
         )
     )
     

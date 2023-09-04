@@ -8,16 +8,19 @@ log = logging.getLogger('core.extract.stream')
 
 # "s3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/track-events-approved/"
 
-def Stream(file):
+def Stream(file, partition=""):
     dttm =  datetime.now() - timedelta(hours=1)
     return createStream(file, dttm.strftime("%Y-%m-%d %H:%M:%S.%f")[:23])
 
-def createStream(file, starting):
+def createStream(file, starting, partition):
     stream = session.spark\
         .readStream.format("delta")\
             .option("maxBytesPerTrigger", 10485760)\
-            .option("startingTimestamp", starting) \
-        .load(file)
+            .option("startingTimestamp", starting)
+    if partition != "":
+        stream.option("partition", partition)
+    stream = stream.load(file)
+    
     log.info(f"Stream created from file {file}")
     stream.printSchema()
     return stream

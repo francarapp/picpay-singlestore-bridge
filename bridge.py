@@ -15,12 +15,12 @@ def Bridge(landing, table, partitions=[], console=False):
     if len(partitions) > 0:
         partitionedby = partitionby(landing, partitions)
         
-    source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/{partitionedby}'
+    source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
     
     log.info(f"Bridging from {source} to {table}")
     stream = Filter(
         Shape(
-            Stream(source), name=landing
+            Stream(source, partition = partitionedby), name=landing
         )
     )
     

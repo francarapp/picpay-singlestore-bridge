@@ -31,7 +31,7 @@ def SinkToSS(stream, evgroup):
     def saveSS(df, epoch):
         
         df.drop('ano', 'mes', 'dia', 'hora', 'minuto')\
-            .filter(length(col("properties")) < 1000000)\
+            .filter(length(col("properties")) < 100000)\
             .write.format("singlestore").mode("overwrite")\
             .save(evgroup)
         

@@ -10,7 +10,7 @@ log = logging.getLogger('core.extract.stream')
 
 def Stream(file, partition=""):
     dttm =  datetime.now() - timedelta(hours=1)
-    return createStream(file, dttm.strftime("%Y-%m-%d %H:%M:%S.%f")[:23])
+    return createStream(file, dttm.strftime("%Y-%m-%d %H:%M:%S.%f")[:23], partition)
 
 def createStream(file, starting, partition):
     stream = session.spark\

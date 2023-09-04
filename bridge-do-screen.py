@@ -5,6 +5,11 @@ from core import session
 from bridge import Bridge
 from datetime import datetime, timedelta
 
+import logging
+
+def conf():
+    logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s', level=logging.DEBUG)
+
 def main():
     stream = Bridge("screen", "screen")
     stream = stream.start()
@@ -12,5 +17,5 @@ def main():
 
 
 if __name__ == "__main__":
-    print("INICIANDO BRIDGE SCREEN")
+    conf()
     main()

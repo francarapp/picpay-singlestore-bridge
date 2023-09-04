@@ -3,15 +3,21 @@ from pyspark.streaming import StreamingContext
 
 from core import session
 from bridge import Bridge
-from datetime import datetime, timedelta
 
+from datetime import datetime, timedelta
+import logging
+
+def conf():
+    logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s', level=logging.DEBUG)
+    
 def main():
-    ssc = StreamingContext(session.context, 1)
-    dttm = datetime.now() - timedelta(hours=1)
-    stream = Bridge("houston", "houston", dttm.strftime("%Y-%m-%d %H:%M:%S.%f")[:23])
+    stream = Bridge("houston", "houston")
     stream = stream.start()
     stream.awaitTermination()
 
 
+
 if __name__ == "__main__":
+    conf()
     main()
+    

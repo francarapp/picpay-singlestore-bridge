@@ -10,6 +10,8 @@ import logging
 def conf():
     logging.basicConfig(format='[%(levelname)s] %(asctime)s {%(module)s} - %(message)s', level=logging.INFO)
     logging.getLogger("core.extract.stream").setLevel(logging.DEBUG)
+    logging.getLogger('pyspark').setLevel(logging.ERROR)
+    logging.getLogger("py4j").setLevel(logging.ERROR)
 
 def main():
     stream = Bridge("screen", "screen")

@@ -1,1 +1,1 @@
-from .range import filterYear
+from .filters import Filter, filterNull, filterYear

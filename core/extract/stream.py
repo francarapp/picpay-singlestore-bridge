@@ -1,5 +1,5 @@
 from pyspark.sql.functions import col, length
-from pyspark.sql import StructType, StructField, StringType
+from pyspark.sql.types import *
 from core import session
 
 from datetime import datetime, timedelta

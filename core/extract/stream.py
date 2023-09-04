@@ -29,7 +29,7 @@ def SinkToS3(stream, evgroup):
 def SinkToSS(stream, evgroup):
     def saveSS(df, epoch):
         
-        df.drop('ano', 'mes', 'dia', 'hora', 'minuto').write.format("singlestore").mode("append").save(evgroup)
+        df.drop('ano', 'mes', 'dia', 'hora', 'minuto').write.format("singlestore").mode("overwrite").save(evgroup)
         
         if epoch%10 == 0 and log.isEnabledFor(logging.DEBUG):
             log.debug(f'DataFrame epoch:{"{:,}".format(epoch)} size: {df.count()}')

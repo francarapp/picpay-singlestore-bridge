@@ -2,7 +2,7 @@ from pyspark.sql.functions import mean, stddev, max, min, sum, count, col, randn
 from pyspark.sql.functions import when, coalesce
 
 import logging
-log = logging.getLogger('core.transform.colums')
+log = logging.getLogger('core.transform.columns')
 
 def withName(df, name):
     columns =  (col for col in df.columns)

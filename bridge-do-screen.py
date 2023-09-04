@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 import logging
 
 def conf():
-    logging.basicConfig(format='[%(levelname)s] %(asctime)s - %(message)s', level=logging.INFO)
+    logging.basicConfig(format='[%(levelname)s] %(asctime)s {%(module)s} - %(message)s', level=logging.INFO)
     logging.getLogger("core.extract.stream").setLevel(logging.DEBUG)
 
 def main():

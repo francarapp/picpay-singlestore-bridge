@@ -11,7 +11,7 @@ log = logging.getLogger(__name__)
 
 def Bridge(landing, singlestore):
     source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
-    log.info("Bridging from {source} to {singlestore}")
+    log.info(f"Bridging from {source} to {singlestore}")
     stream = filterYear(Shape(
         Stream(source)
     ), "2023")

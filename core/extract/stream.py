@@ -1,11 +1,11 @@
 from core import session
 
-import datetime
+from datetime import datetime, timedelta
 
 # "s3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/track-events-approved/"
 
 def Stream(file):
-    dttm =  datetime.now() - datetime.timedelta(hours=1)
+    dttm =  datetime.now() - timedelta(hours=1)
     return createStream(file, dttm.strftime("%Y-%m-%d %H:%M:%S.%f")[:23])
 
 def createStream(file, starting):

@@ -39,3 +39,6 @@ def SinkToSS(stream, evgroup):
             log.debug(f'DataFrame epoch:{"{:,}".format(epoch)} size: {"{:,}".format(df.count())}')
         
     return stream.writeStream.foreachBatch(saveSS)
+
+def LogToConsole(stream):
+    return stream.writeStream.format("console")

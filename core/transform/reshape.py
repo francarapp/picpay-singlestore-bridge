@@ -33,8 +33,11 @@ def withReshape(df, evname):
                 col("context").getItem("correlation_id"),
                 lit(None)
             )) \
-    .withColumn('context', to_json(col('context'))) \
-    .withColumn('properties', to_json(col('properties'))) 
+    .withColumn('context',  to_json(col('context'))) \
+    .withColumn('properties', 
+                when( to_json(col('properties')) != "", to_json(col('properties')) ) \
+                .otherwise(lit(None))
+    )
 
 def Shape(df, name="UNDEFINED"):
     return withTimeslice(withDate(

@@ -19,7 +19,7 @@ def withDate(df, column):
                 from_utc_timestamp(to_utc_timestamp(col(column+"_ts"), col(column+"_tz")), "-0300"), \
                 "yyyy-MM-dd HH:mm:ss.SSS"
             )
-        ).drop(col(column + "_ts"), col(column+"_tz"))
+    )
 
 def withTimeslice(df):
     return df.withColumn('ano', date_format(col('dt_created'), 'yyyy')) \

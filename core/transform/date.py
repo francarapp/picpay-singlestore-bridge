@@ -4,16 +4,17 @@ from pyspark.sql.functions import col
 
 
 def withDateTz(df, column):
+
     return df \
-        .withColumn(column+"_tz", 
-            regexp_extract(column, "([-+]\d{2,4}$)", 1)
+        .withColumn("tz", 
+            when( regexp_extract("ts", "([-+]\d{2,4}$)", 1) != "", regexp_extract("ts", "([-+]\d{2,4}$)", 1))\
+            .otherwise("+0000")        
         ) \
-        .withColumn(column+"_ts", 
+        .withColumn("ts", 
             regexp_replace(
-                regexp_replace(column, "T", " "), \
+                regexp_replace("ts", "T", " "), \
                 "[-+]\d{2,4}$", "")\
         )
-
 
 def withDate(df, column):
     df = withDateTz(df, col)

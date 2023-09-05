@@ -17,7 +17,7 @@ def withDateTz(df, column):
         )
 
 def withDate(df, column):
-    df = withDateTz(df, col)
+    df = withDateTz(df, column)
     return df.withColumn( 
         column,
         date_format(

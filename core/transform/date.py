@@ -6,13 +6,13 @@ from pyspark.sql.functions import col, when
 def withDateTz(df, column):
 
     return df \
-        .withColumn("tz", 
-            when( regexp_extract("ts", "([-+]\d{2,4}$)", 1) != "", regexp_extract("ts", "([-+]\d{2,4}$)", 1))\
+        .withColumn(column+"_tz", 
+            when( regexp_extract(column, "([-+]\d{2,4}$)", 1) != "", regexp_extract(column, "([-+]\d{2,4}$)", 1))\
             .otherwise("+0000")        
         ) \
-        .withColumn("ts", 
+        .withColumn(column+"_ts", 
             regexp_replace(
-                regexp_replace("ts", "T", " "), \
+                regexp_replace(column, "T", " "), \
                 "[-+]\d{2,4}$", "")\
         )
 

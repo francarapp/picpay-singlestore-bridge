@@ -87,7 +87,7 @@ def SinkForeachToSS(stream, evgroup):
            log.error(f"Erro ao persistir {error}")
             
       
-    return stream.writeStream.foreach(ForeachWriter()).start()
+    return stream.writeStream.foreach(ForeachWriter())
 
 
 def SinkToConsole(stream):

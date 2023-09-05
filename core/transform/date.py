@@ -1,6 +1,6 @@
 from pyspark.sql.functions import from_utc_timestamp, to_utc_timestamp, date_format
 from pyspark.sql.functions import regexp_replace, regexp_extract
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, when
 
 
 def withDateTz(df, column):

@@ -91,4 +91,4 @@ def SinkForeachToSS(stream, evgroup):
 
 
 def SinkToConsole(stream):
-    return stream.writeStream.format("console")
+    return stream.writeStream.outputMode("complete").format("console")

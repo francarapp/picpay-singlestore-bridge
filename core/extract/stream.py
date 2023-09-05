@@ -77,7 +77,7 @@ def SinkForeachToSS(stream, evgroup):
                 f"dt_created: {row[dt_created]} dt_received: {row[dt_received]} dt_bridged: {row[dt_bridged]} \n"+ \
                 f"CONTEXT {row[context]}\n PAYLOAD {row[properties]} \n"
             )
-            df = spark.createDataFrame([row], schema)
+            df = session.spark.createDataFrame([row], schema)
             df.drop('ano', 'mes', 'dia', 'hora', 'minuto')\
                 .filter(length(col("properties")) < 10000)\
                 .write.format("singlestore").mode("append")\

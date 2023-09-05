@@ -32,7 +32,7 @@ def Bridge(landing, table, partitions=[], console=False, debug=False):
         return SinkToConsole(stream)
     
     if debug:
-        log.debug("Streamming to SS using foreach")
+        log.info("Streamming to SS using foreach")
         return SinkForeachToSS(stream, table)
     
     log.info("Streamming to SS")

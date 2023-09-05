@@ -71,6 +71,12 @@ def SinkForeachToSS(stream, evgroup):
             pass
 
         def process(self, row):
+            log.debug(\
+                f"Processing: event_name:{row[event_name]} event_id:{row[event_id]} session_id:{row[session_id]}" +\
+                f"user_id: {row[user_id]} correlation_id: {row[correlation_id]} "+ \
+                f"dt_created: {row[dt_created]} dt_received: {row[dt_received]} dt_bridged: {row[dt_bridged]} \n"+ \
+                f"CONTEXT {row[context]}\n PAYLOAD {row[properties]} \n"
+            )
             df = spark.createDataFrame([row], schema)
             df.drop('ano', 'mes', 'dia', 'hora', 'minuto')\
                 .filter(length(col("properties")) < 10000)\

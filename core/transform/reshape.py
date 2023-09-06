@@ -71,12 +71,15 @@ def withRetype(df):
 def preparePropertiesForSelect(evgroup):
     match evgroup:
         case 'identify':            
-            properties = create_map(list(chain(*(
-                [
-                    (lit('brazeConfiguration'), col('brazeConfiguration')), 
-                    (lit('traits'), col('traits'))
-                ]
-            )))).alias("properties")
+            properties = \
+                to_json(
+                    create_map(list(chain(*(
+                        [
+                            (lit('brazeConfiguration'), col('brazeConfiguration')), 
+                            (lit('traits'), col('traits'))
+                        ]
+                    ))))
+                ).alias("properties")
             return properties
         case 'alias':
             properties = create_map(list(chain(*(

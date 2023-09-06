@@ -22,37 +22,41 @@ def withReshape(df, evname):
             coalesce(
                 col("context").getItem("session_id"),
                 lit(None)
-            )) \
-        .withColumn('context',  to_json(col('context')))
-           
+            ))
+                   
     match evname:
         case 'alias':
-            return df \
-                .withColumn('properties', lit('{}'))\
+            df = df \
+                .withColumn('properties', lit(None))\
                 .withColumn('correlation_id', lit(None))
         case 'identify':
-            return df \
-                .withColumn('properties', lit('{}'))\
+            df = df \
+                .withColumn('properties', lit(None))\
                 .withColumn('correlation_id', lit(None))
         case other:
-            return df\
+            df = df\
                 .withColumn('correlation_id', 
                     coalesce(
                         col('properties').getItem('correlation_id'),\
                         lit(None)
                     )\
                 )\
-                .withColumn('properties', 
-                    when( to_json(col('properties')) != "", to_json(col('properties')) ) \
-                    .otherwise(lit(None))
-                )\
                 .withColumn("user_id",
                     when(
                         col("user_id").isNull(), col("anonymousId")
                     ).otherwise(col("user_id"))
                 ) 
- 
-       
+    return withRetype(df)
+
+def withRetype(df):
+    return df\
+        .withColumn('properties', 
+            when( to_json(col('properties')) != "", to_json(col('properties')) ) \
+            .otherwise(lit(None))
+        )\
+        .withColumn('context',  to_json(col('context')))
+
+      
 def preparePropertiesForSelect(evgroup):
     match evgroup:
         case 'identify':            

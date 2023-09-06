@@ -48,6 +48,7 @@ def withReshape(df, evname):
                 .withColumn('correlation_id', 
                     coalesce(
                         col('properties').getItem('correlation_id'),\
+                        col('context').getItem('correlation_id'),\
                         lit(None)
                     )\
                 )\

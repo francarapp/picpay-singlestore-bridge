@@ -1,3 +1,4 @@
+import pyspark.sql.functions as F
 from pyspark.sql.functions import mean, stddev, max, min, sum, count, col, randn, round, to_date, date_format, percentile_approx, lit
 from pyspark.sql.functions import when, coalesce
 from pyspark.sql.functions import  create_map
@@ -23,7 +24,12 @@ def withReshape(df, evname):
                 lit(None)
             )) \
         .withColumn('context',  to_json(col('context')))
-        
+
+    def isKey(key, map):
+        return key in map.keys()
+    
+    hasCorrelation = lambda k: F.udf(lambda m: isKey(k, m), BooleanType())
+
     match evname:
         case 'alias':
             return df \
@@ -36,14 +42,10 @@ def withReshape(df, evname):
         case other:
             return df\
                 .withColumn('correlation_id', 
-                    when(
-                        col('properties').getItem('correlation_id').isNotNull(), 
-                        col('properties').getItem('correlation_id')
-                    ).otherwise(
-                        when(
-                            col('context').getItem('correlation_id').isNotNull(),
-                            col('context').getItem('correlation_id')
-                        ).otherwise(lit(None))
+                    coalesce(
+                        col('properties').getItem('correlation_id'),\
+                        col('context').getItem('correlation_id'),\
+                        lit(None)
                     )\
                 )\
                 .withColumn('properties', 

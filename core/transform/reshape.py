@@ -1,6 +1,8 @@
 from pyspark.sql.functions import mean, stddev, max, min, sum, count, col, randn, round, to_date, date_format, percentile_approx, lit
 from pyspark.sql.functions import when, coalesce
+from pyspark.sql.functions import  create_map
 from pyspark.sql.functions import to_json
+from itertools import chain
 
 from .date import withDate, withTimeslice
 from .columns import withEventName
@@ -9,13 +11,17 @@ import datetime
 
 def withReshape(df, evname):
     df = withEventName(df, evname)
-    
-    df = prepareProperties(df, evname)
-    df = df.withColumn("userId",
-        when(
-            col("userId").isNull(), col("anonymousId")
-        ).otherwise(col("userId"))
-    )
+
+    match evname:
+        case 'alias':    
+            pass
+        case other:
+            df = df.withColumn("userId",
+                when(
+                    col("userId").isNull(), col("anonymousId")
+                ).otherwise(col("userId"))
+            )
+            
     return df \
         .withColumnRenamed('uuid', 'event_id') \
         .withColumnRenamed('userId', 'user_id') \
@@ -44,18 +50,29 @@ def withReshape(df, evname):
                 when( to_json(col('properties')) != "", to_json(col('properties')) ) \
                 .otherwise(lit(None))
         )            
-
-def prepareProperties(stream, evgroup):
+   
+def preparePropertiesForSelect(evgroup):
     match evgroup:
-        case 'identify':
-            return stream.withColumn('properties', col('brazeConfiguration'))
+        case 'identify':            
+            properties = create_map(list(chain(*(
+                [
+                    (lit('brazeConfiguration'), col('brazeConfiguration')), 
+                    (lit('traits'), col('traits'))
+                ]
+            )))).alias("properties")
+            return properties
         case 'alias':
-            return stream.withColumn('properties', lit(None))
+            properties = create_map(list(chain(*(
+                [
+                    (lit('previousId'), col('previousId'))
+                ]
+            )))).alias("properties")
+            return properties
         case other:
-            return stream
-        
+            return 'properties'      
+    return 
 
-def Shape(df, name="UNDEFINED"):
+def Shape(df, evgroup, name="UNDEFINED"):
     return withTimeslice(withDate(
         withDate(
             withReshape(df, name), 
@@ -65,5 +82,5 @@ def Shape(df, name="UNDEFINED"):
             'ano', 'mes', 'dia', 'hora', 'minuto', 'event_name', 
             'event_id', 'session_id', 'user_id', 'correlation_id', 
             'dt_created', 'dt_received', 'dt_bridged', 
-            'context', 'properties'
-    )   
+            'context', preparePropertiesForSelect(evgroup)
+        )   

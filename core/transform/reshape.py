@@ -82,11 +82,11 @@ def preparePropertiesForSelect(evgroup):
                 ).alias("properties")
             return properties
         case 'alias':
-            properties = create_map(list(chain(*(
+            properties = to_json(create_map(list(chain(*(
                 [
                     (lit('previousId'), col('previousId'))
                 ]
-            )))).alias("properties")
+            ))))).alias("properties")
             return properties
         case other:
             return 'properties'      

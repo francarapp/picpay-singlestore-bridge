@@ -47,6 +47,16 @@ def SinkToSS(stream, evgroup):
         
     return stream.writeStream.foreachBatch(saveSS)
 
+def SinkToCsv(stream, evgroup):
+    return stream.select('properties') \
+	    .coalesce(1) \
+	    .writeStream \
+	    .option("checkpointLocation", f"/home/spark/checkpoint/{evgroup}") \
+	    .option('path', f"/home/spark/json/{evgroup}") \
+	    .trigger(processingTime="10 seconds") \
+	    .format("csv") \
+	    .outputMode("append") 
+
 def SinkForeachToSS(stream, evgroup):
     schema = StructType([ \
         StructField("event_name",StringType(),True), \

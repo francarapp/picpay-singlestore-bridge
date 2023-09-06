@@ -8,6 +8,12 @@ Meta = {
     },
     "page" : {
         "partitions": ["year", "month", "day"]
+    },
+    "identify" : {
+        "partitions": ["year", "month", "day"]
+    },
+    "alias" : {
+        "partitions": ["year", "month", "day"]
     }
 }
 

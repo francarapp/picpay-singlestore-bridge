@@ -53,9 +53,10 @@ def withReshape(df, evname):
                     )\
                 )\
                 .withColumn("user_id",
-                    when(
-                        col("user_id").isNull(), col("anonymousId")
-                    ).otherwise(col("user_id"))
+                    coalesce(
+                        col("user_id"),
+                        col("anonymousId")
+                    )
                 ) 
     return withRetype(df)
 

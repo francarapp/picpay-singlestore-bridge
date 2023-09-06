@@ -1,5 +1,8 @@
 
 Meta = {
+    "screen" : {
+        "partitions": ["year", "month", "day"]
+    },
     "houston" : {
         "partitions": ["event", "year", "month", "day"]
     },

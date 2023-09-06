@@ -1,1 +1,1 @@
-from .stream import Stream, SinkToS3, SinkToSS, SinkToConsole, SinkForeachToSS
+from .stream import Stream, SinkToS3, SinkToSS, SinkToConsole, SinkForeachToSS, SinkToCsv

@@ -10,19 +10,7 @@ from .columns import withEventName
 import datetime
 
 def withReshape(df, evname):
-    df = withEventName(df, evname)
-
-    match evname:
-        case 'alias':    
-            pass
-        case other:
-            df = df.withColumn("userId",
-                when(
-                    col("userId").isNull(), col("anonymousId")
-                ).otherwise(col("userId"))
-            )
-            
-    df = df \
+    df = withEventName(df, evname) \
         .withColumnRenamed('uuid', 'event_id') \
         .withColumnRenamed('userId', 'user_id') \
         .withColumnRenamed('createdAt', 'dt_created') \
@@ -38,9 +26,13 @@ def withReshape(df, evname):
         
     match evname:
         case 'alias':
-            return df
+            return df \
+                .withColumn('properties', lit('{}'))\
+                .withColumn('correlation_id', lit(None))
         case 'identify':
-            return df
+            return df \
+                .withColumn('properties', lit('{}'))\
+                .withColumn('correlation_id', lit(None))
         case other:
             return df\
                 .withColumn('properties', 
@@ -56,8 +48,13 @@ def withReshape(df, evname):
                             col('context').getItem('correlation_id').isNotNull(),
                             col('context').getItem('correlation_id')
                         ).otherwise(lit(None))
-                    )
-                )  
+                )\
+                .withColumn("user_id",
+                    when(
+                        col("user_id").isNull(), col("anonymousId")
+                    ).otherwise(col("user_id"))
+                )                      
+            ) 
  
        
 def preparePropertiesForSelect(evgroup):

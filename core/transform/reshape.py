@@ -28,8 +28,6 @@ def withReshape(df, evname):
     def isKey(key, map):
         return key in map.keys()
     
-    hasCorrelation = lambda k: F.udf(lambda m: isKey(k, m), BooleanType())
-
     match evname:
         case 'alias':
             return df \

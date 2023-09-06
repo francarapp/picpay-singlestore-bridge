@@ -24,10 +24,7 @@ def withReshape(df, evname):
                 lit(None)
             )) \
         .withColumn('context',  to_json(col('context')))
-
-    def isKey(key, map):
-        return key in map.keys()
-    
+           
     match evname:
         case 'alias':
             return df \
@@ -42,7 +39,6 @@ def withReshape(df, evname):
                 .withColumn('correlation_id', 
                     coalesce(
                         col('properties').getItem('correlation_id'),\
-                        col('context').getItem('correlation_id'),\
                         lit(None)
                     )\
                 )\

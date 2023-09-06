@@ -28,11 +28,21 @@ def withReshape(df, evname):
         case 'alias':
             df = df \
                 .withColumn('properties', lit(None))\
-                .withColumn('correlation_id', lit(None))
+                .withColumn('correlation_id', 
+                    coalesce(
+                        col('context').getItem('correlation_id'),\
+                        lit(None)
+                    )\
+                )
         case 'identify':
             df = df \
                 .withColumn('properties', lit(None))\
-                .withColumn('correlation_id', lit(None))
+                .withColumn('correlation_id', 
+                    coalesce(
+                        col('context').getItem('correlation_id'),\
+                        lit(None)
+                    )\
+                )
         case other:
             df = df\
                 .withColumn('correlation_id', 

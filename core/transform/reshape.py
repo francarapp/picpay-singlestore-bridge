@@ -22,7 +22,7 @@ def withReshape(df, evname):
                 ).otherwise(col("userId"))
             )
             
-    return df \
+    df = df \
         .withColumnRenamed('uuid', 'event_id') \
         .withColumnRenamed('userId', 'user_id') \
         .withColumnRenamed('createdAt', 'dt_created') \
@@ -45,12 +45,19 @@ def withReshape(df, evname):
                 ).otherwise(lit(None))
             )
         )\
-        .withColumn('context',  to_json(col('context'))) \
-        .withColumn('properties', 
+        .withColumn('context',  to_json(col('context')))
+        
+    match evname:
+        case 'alias':
+            return df
+        case 'identify':
+            return df
+        case other:
+            return df.withColumn('properties', 
                 when( to_json(col('properties')) != "", to_json(col('properties')) ) \
                 .otherwise(lit(None))
-        )            
-   
+            )            
+       
 def preparePropertiesForSelect(evgroup):
     match evgroup:
         case 'identify':            
@@ -70,7 +77,6 @@ def preparePropertiesForSelect(evgroup):
             return properties
         case other:
             return 'properties'      
-    return 
 
 def Shape(df, evgroup, name="UNDEFINED"):
     return withTimeslice(withDate(

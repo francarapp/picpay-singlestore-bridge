@@ -35,10 +35,6 @@ def withReshape(df, evname):
                 .withColumn('correlation_id', lit(None))
         case other:
             return df\
-                .withColumn('properties', 
-                    when( to_json(col('properties')) != "", to_json(col('properties')) ) \
-                    .otherwise(lit(None))
-                )\
                 .withColumn('correlation_id', 
                     when(
                         col('properties').getItem('correlation_id').isNotNull(), 
@@ -49,6 +45,10 @@ def withReshape(df, evname):
                             col('context').getItem('correlation_id')
                         ).otherwise(lit(None))
                     )\
+                )\
+                .withColumn('properties', 
+                    when( to_json(col('properties')) != "", to_json(col('properties')) ) \
+                    .otherwise(lit(None))
                 )\
                 .withColumn("user_id",
                     when(

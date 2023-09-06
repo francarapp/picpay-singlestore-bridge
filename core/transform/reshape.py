@@ -10,34 +10,50 @@ import datetime
 def withReshape(df, evname):
     df = withEventName(df, evname)
     
+    df = prepareProperties(df, evname)
     df = df.withColumn("userId",
         when(
             col("userId").isNull(), col("anonymousId")
         ).otherwise(col("userId"))
-)
+    )
     return df \
-    .withColumnRenamed('uuid', 'event_id') \
-    .withColumnRenamed('userId', 'user_id') \
-    .withColumnRenamed('createdAt', 'dt_created') \
-    .withColumnRenamed('sendAt', 'dt_received') \
-    .withColumn('dt_bridged',  lit(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:23])) \
-    .withColumn(
+        .withColumnRenamed('uuid', 'event_id') \
+        .withColumnRenamed('userId', 'user_id') \
+        .withColumnRenamed('createdAt', 'dt_created') \
+        .withColumnRenamed('sendAt', 'dt_received') \
+        .withColumn('dt_bridged',  lit(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:23])) \
+        .withColumn('context',  to_json(col('context'))) \
+        .withColumn('properties', 
+                when( to_json(col('properties')) != "", to_json(col('properties')) ) \
+                .otherwise(lit(None))
+        )\
+        .withColumn(
             "session_id",
             coalesce(
                 col("context").getItem("session_id"),
                 lit(None)
             )) \
-    .withColumn(
-            "correlation_id",
-            coalesce(
-                col("context").getItem("correlation_id"),
-                lit(None)
-            )) \
-    .withColumn('context',  to_json(col('context'))) \
-    .withColumn('properties', 
-                when( to_json(col('properties')) != "", to_json(col('properties')) ) \
-                .otherwise(lit(None))
-    )
+        .withColumn('correlation_id', 
+            when(
+                col('properties').getItem('correlation_id').isNotNull(), 
+                col('properties').getItem('correlation_id')
+            ).otherwise(
+                when(
+                    col('context').getItem('correlation_id').isNotNull(),
+                    col('context').getItem('correlation_id')
+                ).otherwise(lit(None))
+            )
+        )
+
+def prepareProperties(stream, evgroup):
+    match evgroup:
+        case 'identify':
+            return stream.withColumn('properties', col('brazeConfiguration'))
+        case 'alias':
+            return stream.withColumn('properties', lit(None))
+        case other:
+            return stream
+        
 
 def Shape(df, name="UNDEFINED"):
     return withTimeslice(withDate(

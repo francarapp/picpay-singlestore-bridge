@@ -23,8 +23,8 @@ def Bridge(landing, table, partitions=[], console=False, debug=False):
     log.info(f"Bridging from {source} to {table}")
     stream = Filter(
         Shape(
-            Stream(source, landing, partition = partitionedby), 
-            name=evname
+            Stream(source, partition = partitionedby), 
+            landing, evname
         )
     )
     

@@ -22,11 +22,6 @@ def withReshape(df, evname):
         .withColumnRenamed('createdAt', 'dt_created') \
         .withColumnRenamed('sendAt', 'dt_received') \
         .withColumn('dt_bridged',  lit(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:23])) \
-        .withColumn('context',  to_json(col('context'))) \
-        .withColumn('properties', 
-                when( to_json(col('properties')) != "", to_json(col('properties')) ) \
-                .otherwise(lit(None))
-        )\
         .withColumn(
             "session_id",
             coalesce(
@@ -43,7 +38,12 @@ def withReshape(df, evname):
                     col('context').getItem('correlation_id')
                 ).otherwise(lit(None))
             )
-        )
+        )\
+        .withColumn('context',  to_json(col('context'))) \
+        .withColumn('properties', 
+                when( to_json(col('properties')) != "", to_json(col('properties')) ) \
+                .otherwise(lit(None))
+        )            
 
 def prepareProperties(stream, evgroup):
     match evgroup:

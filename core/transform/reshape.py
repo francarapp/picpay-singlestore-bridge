@@ -97,5 +97,5 @@ def Shape(df, evgroup, name="UNDEFINED"):
             'ano', 'mes', 'dia', 'hora', 'minuto', 'event_name', 
             'event_id', 'session_id', 'user_id', 'correlation_id', 
             'dt_created', 'dt_received', 'dt_bridged', 
-            'context', 'properties'
+            'context', preparePropertiesForSelect(evgroup)
         )   

@@ -48,13 +48,13 @@ def withReshape(df, evname):
                             col('context').getItem('correlation_id').isNotNull(),
                             col('context').getItem('correlation_id')
                         ).otherwise(lit(None))
+                    )\
                 )\
                 .withColumn("user_id",
                     when(
                         col("user_id").isNull(), col("anonymousId")
                     ).otherwise(col("user_id"))
-                )                      
-            ) 
+                ) 
  
        
 def preparePropertiesForSelect(evgroup):

@@ -34,17 +34,6 @@ def withReshape(df, evname):
                 col("context").getItem("session_id"),
                 lit(None)
             )) \
-        .withColumn('correlation_id', 
-            when(
-                col('properties').getItem('correlation_id').isNotNull(), 
-                col('properties').getItem('correlation_id')
-            ).otherwise(
-                when(
-                    col('context').getItem('correlation_id').isNotNull(),
-                    col('context').getItem('correlation_id')
-                ).otherwise(lit(None))
-            )
-        )\
         .withColumn('context',  to_json(col('context')))
         
     match evname:
@@ -53,10 +42,23 @@ def withReshape(df, evname):
         case 'identify':
             return df
         case other:
-            return df.withColumn('properties', 
-                when( to_json(col('properties')) != "", to_json(col('properties')) ) \
-                .otherwise(lit(None))
-            )            
+            return df\
+                .withColumn('properties', 
+                    when( to_json(col('properties')) != "", to_json(col('properties')) ) \
+                    .otherwise(lit(None))
+                )\
+                .withColumn('correlation_id', 
+                    when(
+                        col('properties').getItem('correlation_id').isNotNull(), 
+                        col('properties').getItem('correlation_id')
+                    ).otherwise(
+                        when(
+                            col('context').getItem('correlation_id').isNotNull(),
+                            col('context').getItem('correlation_id')
+                        ).otherwise(lit(None))
+                    )
+                )  
+ 
        
 def preparePropertiesForSelect(evgroup):
     match evgroup:

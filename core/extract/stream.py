@@ -14,7 +14,7 @@ def Stream(file, partition=""):
     # return createStream(file, dttm.strftime("%Y-%m-%d %H:%M:%S.%f")[:23], partition)
     strnow =  datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:10]
     start = f'{strnow} 00:00:00.000'
-    log.info(f"Stream created with delta startingTimestamp: {start}")
+    log.info(f"Stream created with delta startingTimestamp: {start} to partition {partition}")
     return createStream(file, start, partition)
 
 def createStream(file, starting, partition):
@@ -26,7 +26,7 @@ def createStream(file, starting, partition):
         stream.option("partition", partition)
     stream = stream.load(file)
     
-    log.info(f"Stream created from file {file}")
+    log.info(f"Stream created from file {file} and partition {partition}")
     stream.printSchema()
     return stream
 

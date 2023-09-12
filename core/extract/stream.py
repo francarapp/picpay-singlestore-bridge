@@ -20,8 +20,8 @@ def Stream(file, partition="", printSchema=False):
 def createStream(file, starting, partition, printSchema=False):
     stream = session.spark\
         .readStream.format("delta")\
-            .option("maxBytesPerTrigger", 10485760)\
-            .option("startingTimestamp", starting)
+            .option("maxBytesPerTrigger", 10485760)
+            #.option("startingTimestamp", starting)
     #if partition != "":
     #    stream.option("partition", partition)
     stream = stream.load(file)

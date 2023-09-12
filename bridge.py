@@ -40,8 +40,8 @@ def BridgeUnion(landing, table, transactions, console=False):
     source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
     stream = Filter(
         Shape(
-            Stream(source, partition = "event=transaction_accomplished").union(
-                Stream(source, partition = "event=transaction_delayed_approved")
+            Stream(source, partition = "event='transaction_accomplished'").union(
+                Stream(source, partition = "event='transaction_delayed_approved'")
             ) , landing, "track"
         )
      )

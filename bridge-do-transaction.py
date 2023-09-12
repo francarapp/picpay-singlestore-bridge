@@ -12,10 +12,10 @@ def conf():
     
 
 def main():
-    stream = BridgeTransactions("track", "event_transaction", partitions=[
+    stream = BridgeTransactions("track", "event_transaction", transactions=[
         "transaction_accomplished",
         "transaction_delayed_approved"
-    ])
+    ], console=True)
     stream = stream.start()
     stream.awaitTermination()
 

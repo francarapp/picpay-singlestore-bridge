@@ -41,7 +41,7 @@ def BridgeUnion(landing, table, transactions, console=False):
     stream = Filter(
         Shape(
             Stream(source, partition = "event='transaction_fraud_check_analyzed' and year=2023 and month=9 and day=12").union(
-                Stream(source, partition = "event='transaction_delayed_approved' and year=2023 and month=6")
+                Stream(source, partition = "event='transaction_invoiced' and year=2023 and month=9 and day=12")
             ) , landing, "track"
         )
      )

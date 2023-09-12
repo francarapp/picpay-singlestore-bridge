@@ -10,9 +10,6 @@ def withEventName(df, name):
     elif "name" in df.columns:
         log.debug("Using column name as event_name")
         return df.withColumn('event_name', col('name'))
-    elif "former_event_name" in df.columns:
-        log.debug("Using column former_event_name as event_name")
-        return df.withColumn('event_name', col('former_event_name'))
     elif "event" in df.columns:
         log.debug("Using column event as event_name")
         return df.withColumn('event_name', col('event'))

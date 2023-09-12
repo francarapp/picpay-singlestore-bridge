@@ -36,6 +36,25 @@ def Bridge(landing, table, partitions=[], console=False, debug=False):
     return SinkToSS(stream, table)
 
 
+def BridgeUnion(landing, table, transactions, console=False):   
+    source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
+    stream = Filter(
+        Shape(
+            Stream(source, partition = "event=transaction_accomplished").union(
+                Stream(source, partition = "event=transaction_delayed_approved")
+            )
+        )
+     )
+    
+    if console:
+        log.info("Streamming to console")
+        return SinkToConsole(stream)
+    
+    log.info("Streamming to SS")
+    return SinkToSS(stream, table)
+
+
+
 def BridgeTransactions(landing, table, transactions, console=False):
     stream = None
     for transact in transactions:
@@ -44,18 +63,14 @@ def BridgeTransactions(landing, table, transactions, console=False):
         
         source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
     
-        log.info(f"Bridging from {source} to {table}")
+        log.info(f"Bridging {transact} transactions from {source} to {table}")
         transactStream = Filter(
             Shape(
                 Stream(source, partition = partitionedby), 
                 landing, transact
             )
-        )
-        
-        if stream != None:
-            stream = stream.union(transactStream)
-        else:
-            stream = transactStream
+        )        
+        stream = stream.union(transactStream) if stream is not None else transactStream
     
     
     if console:

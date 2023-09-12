@@ -42,7 +42,7 @@ def BridgeUnion(landing, table, transactions, console=False):
         Shape(
             Stream(source, partition = "event=transaction_accomplished").union(
                 Stream(source, partition = "event=transaction_delayed_approved")
-            )
+            ) , landing, "track"
         )
      )
     

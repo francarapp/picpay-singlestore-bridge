@@ -26,7 +26,7 @@ def createStream(file, starting, partition, printSchema=False):
     #    stream.option("partition", partition)
     stream = stream.load(file)
     if partition != "":
-        stream.where(partition)    
+        stream = stream.where(partition)    
     log.info(f"Stream created from file {file} and partition {partition}")
     if printSchema:
         stream.printSchema()

@@ -38,14 +38,19 @@ def Bridge(landing, table, partitions=[], console=False, debug=False):
 
 def BridgeUnion(landing, table, transactions, console=False):   
     source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
+    # stream = Filter(
+    #     Shape(
+    #         Stream(source, partition = "event='button_clicked' and year=2023 and month=9 and day=12").union(
+    #             Stream(source, partition = "event='transaction_invoiced' and year=2023 and month=9 and day=12")
+    #         ) , landing, "track"
+    #     )
+    #  )
     stream = Filter(
         Shape(
-            Stream(source, partition = "event='button_clicked' and year=2023 and month=9 and day=12").union(
-                Stream(source, partition = "event='transaction_invoiced' and year=2023 and month=9 and day=12")
-            ) , landing, "track"
-        )
-     )
-    
+            Stream(source, partition = "event='button_clicked' and year=2023 and month=9 and day=12"), 
+            landing, "track"
+        )   
+    ) 
     if console:
         log.info("Streamming to console")
         return SinkToConsole(stream)

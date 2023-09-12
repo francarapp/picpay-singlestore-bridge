@@ -22,11 +22,11 @@ def createStream(file, starting, partition, printSchema=False):
         .readStream.format("delta")\
             .option("maxBytesPerTrigger", 10485760)\
             .option("startingTimestamp", starting)
-    #if partition != "":
-    #    stream.option("partition", partition)
-    stream = stream.load(file)
     if partition != "":
-        stream.where(partition)    
+        stream.option("partition", partition)
+    stream = stream.load(file)
+    #if partition != "":
+    #    stream.where(partition)    
     log.info(f"Stream created from file {file} and partition {partition}")
     if printSchema:
         stream.printSchema()

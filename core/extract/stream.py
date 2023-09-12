@@ -12,8 +12,8 @@ log = logging.getLogger('core.extract.stream')
 def Stream(file, partition=""):
     # dttm =  datetime.now() - timedelta(hours=1)
     # return createStream(file, dttm.strftime("%Y-%m-%d %H:%M:%S.%f")[:23], partition)
-    strnow =  datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
-    start = f'{datetime.strptime(strnow, "%Y-%m-%d")} 00:00:00.000'
+    strnow =  datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:10]
+    start = f'{strnow} 00:00:00.000'
     log.info(f"Stream created with delta startingTimestamp: {start}")
     return createStream(file, start, partition)
 

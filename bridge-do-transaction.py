@@ -55,7 +55,7 @@ def main():
         "transaction_status_changed_error",
         "transaction_status_changed",
         "transaction_watson_executed"
-    ], console=True)
+    ], console=False)
     stream = stream.start()
     stream.awaitTermination()
 

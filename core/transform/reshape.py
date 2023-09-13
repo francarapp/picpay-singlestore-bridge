@@ -8,15 +8,15 @@ from itertools import chain
 from .date import withDate, withTimeslice
 from .columns import withEventName
 
-import datetime
+from datetime import datetime, timezone, timedelta
 
-def withReshape(df, evname):
+def withReshape(df, evname):    
     df = withEventName(df, evname) \
         .withColumnRenamed('uuid', 'event_id') \
         .withColumnRenamed('userId', 'user_id') \
         .withColumnRenamed('createdAt', 'dt_created') \
         .withColumnRenamed('sendAt', 'dt_received') \
-        .withColumn('dt_bridged',  lit(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:23])) \
+        .withColumn('dt_bridged',  lit(datetime.now(timezone(timedelta(hours=-3.0))).strftime("%Y-%m-%d %H:%M:%S.%f")[:23])) \
         .withColumn(
             "session_id",
             coalesce(

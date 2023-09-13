@@ -109,63 +109,17 @@ def Shape(df, evgroup, name="UNDEFINED"):
 
 schemaTransaction = StructType([
     StructField("id", StringType()),
-    StructField("correlation_id", StringType()),
-    StructField("product", StringType()),
-    StructField("profile", StringType()),
-    StructField("status", StringType()),
-    StructField("payer_id", StringType()),
-    StructField("payer_type", StringType()),
-    StructField("base_value", StringType()),
-    StructField("payer_value", StringType()),
-    StructField("receiver_value", StringType()),
-    StructField("updated_at", StringType()),
-    StructField("created_at", StringType())
+    StructField("correlation_id", StringType())
 ])
 
 
-transactionJsonSchema = """
-{
-  "$schema": "http://json-schema.org/draft-04/schema#",    
-  "type": "object",
-  "properties": {
-    "id": {
-      "type": "integer"
-    },
-    "correlation_id": {
-      "type": "string"
-    },
-    "product": {
-      "type": "string"
-    },
-    "profile": {
-      "type": "string"
-    },
-    "status": {
-      "type": "string"
-    },
-    "payer_id": {
-      "type": "string"
-    },
-    "payer_type": {
-      "type": "string"
-    },
-    "base_value": {
-      "type": "string"
-    },
-    "payer_value": {
-      "type": "string"
-    },
-    "receiver_value": {
-      "type": "string"
-    },
-    "updated_at": {
-      "type": "string"
-    },
-    "created_at": {
-      "type": "string"
-    }
-  },
-  "required": [
-  ]
-}
-"""
+    # StructField("product", StringType()),
+    # StructField("profile", StringType()),
+    # StructField("status", StringType()),
+    # StructField("payer_id", StringType()),
+    # StructField("payer_type", StringType()),
+    # StructField("base_value", StringType()),
+    # StructField("payer_value", StringType()),
+    # StructField("receiver_value", StringType()),
+    # StructField("updated_at", StringType()),
+    # StructField("created_at", StringType())

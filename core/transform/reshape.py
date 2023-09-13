@@ -2,7 +2,7 @@ import pyspark.sql.functions as F
 from pyspark.sql.functions import mean, stddev, max, min, sum, count, col, randn, round, to_date, date_format, percentile_approx, lit
 from pyspark.sql.functions import when, coalesce
 from pyspark.sql.functions import  create_map
-from pyspark.sql.functions import to_json
+from pyspark.sql.functions import to_json, from_json
 from itertools import chain
 
 from .date import withDate, withTimeslice
@@ -49,7 +49,7 @@ def withReshape(df, evname):
                     coalesce(
                         col('properties').getItem('correlation_id'),\
                         col('context').getItem('correlation_id'),\
-                        col('properties').getItem('transaction').getItem('correlation_id'),\
+                        from_json(col('properties').getItem('transaction'), transactionJsonSchema).getItem('correlation_id'),\
                         lit(None)
                     )\
                 )\
@@ -105,3 +105,50 @@ def Shape(df, evgroup, name="UNDEFINED"):
             'dt_created', 'dt_received', 'dt_bridged', 
             'context', preparePropertiesForSelect(evgroup)
         )   
+
+
+transactionJsonSchema = """
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "correlation_id": {
+      "type": "string"
+    },
+    "product": {
+      "type": "string"
+    },
+    "profile": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "payer_id": {
+      "type": "string"
+    },
+    "payer_type": {
+      "type": "string"
+    },
+    "base_value": {
+      "type": "string"
+    },
+    "payer_value": {
+      "type": "string"
+    },
+    "receiver_value": {
+      "type": "string"
+    },
+    "updated_at": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string"
+    }
+  },
+  "required": [
+  ]
+}
+"""

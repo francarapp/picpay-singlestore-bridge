@@ -23,14 +23,9 @@ def createStream(file, starting, partition, printSchema=False):
             .option("maxBytesPerTrigger", 10485760)\
             .option("readChangeFeed", "true")\
             .option("startingTimestamp", starting)
-            #.option("startingVersion", '13444')
-            #.option("startingTimestamp", '2023-06-29 00:00:00.000')
-            #.option("startingTimestamp", starting)
-    # if partition != "":
-    #     stream = stream.option("partition", partition)    
+
     stream = stream.load(file)
     if partition != "":
-        # stream = stream.where(partition)    
         stream = stream.filter(partition)
     log.info(f"Stream created from file {file} and partition {partition}")
     if printSchema:

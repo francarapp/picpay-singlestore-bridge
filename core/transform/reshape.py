@@ -1,4 +1,5 @@
 import pyspark.sql.functions as F
+from pyspark.sql.types import *
 from pyspark.sql.functions import mean, stddev, max, min, sum, count, col, randn, round, to_date, date_format, percentile_approx, lit
 from pyspark.sql.functions import when, coalesce
 from pyspark.sql.functions import  create_map
@@ -49,7 +50,7 @@ def withReshape(df, evname):
                     coalesce(
                         col('properties').getItem('correlation_id'),\
                         col('context').getItem('correlation_id'),\
-                        from_json(col('properties').getItem('transaction'), transactionJsonSchema).getItem('correlation_id'),\
+                        from_json(col('properties').getItem('transaction'), schemaTransaction).getItem('correlation_id'),\
                         lit(None)
                     )\
                 )\
@@ -105,6 +106,21 @@ def Shape(df, evgroup, name="UNDEFINED"):
             'dt_created', 'dt_received', 'dt_bridged', 
             'context', preparePropertiesForSelect(evgroup)
         )   
+
+schemaTransaction = StructType([
+    StructField("id", StringType()),
+    StructField("correlation_id", StringType()),
+    StructField("product", StringType()),
+    StructField("profile", StringType()),
+    StructField("status", StringType()),
+    StructField("payer_id", StringType()),
+    StructField("payer_type", StringType()),
+    StructField("base_value", StringType()),
+    StructField("payer_value", StringType()),
+    StructField("receiver_value", StringType()),
+    StructField("updated_at", StringType()),
+    StructField("created_at", StringType())
+])
 
 
 transactionJsonSchema = """

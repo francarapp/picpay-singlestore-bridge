@@ -8,10 +8,11 @@ from itertools import chain
 
 from .date import withDate, withTimeslice
 from .columns import withEventName
+from .properties import withProperties
 
 from datetime import datetime, timezone, timedelta
 
-def withReshape(df, evname):    
+def withReshape(df, evgroup, evname): 
     df = withEventName(df, evname) \
         .withColumnRenamed('uuid', 'event_id') \
         .withColumnRenamed('userId', 'user_id') \
@@ -25,7 +26,7 @@ def withReshape(df, evname):
                 lit(None)
             ))
                    
-    match evname:
+    match evgroup:
         case 'alias':
             df = df \
                 .withColumn('properties', lit(None))\
@@ -44,6 +45,18 @@ def withReshape(df, evname):
                         lit(None)
                     )\
                 )
+        case 'interaction':
+            df = df\
+                .withColumn('correlation_id', 
+                    coalesce(
+                        col('properties').getItem('correlation_id'),\
+                        col('context').getItem('correlation_id'),\
+                        lit(None)
+                    )\
+                )
+            match evname:
+                case 'button_clicked':
+                    df = withProperties(df, ["business_context", "button_name", "screen_name", "provider"])
         case other:
             df = df\
                 .withColumn('correlation_id', 
@@ -94,10 +107,11 @@ def preparePropertiesForSelect(evgroup):
         case other:
             return 'properties'      
 
-def Shape(df, evgroup, name="UNDEFINED"):
+def Shape(df, evgroup, evname=None):
+    evname = evname if evname is not None else evgroup
     return withTimeslice(withDate(
         withDate(
-            withReshape(df, name), 
+            withReshape(df, evgroup, evname), 
             'dt_created'
         ), 'dt_received'
         )).select(

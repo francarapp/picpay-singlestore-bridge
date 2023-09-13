@@ -4,7 +4,7 @@ from pyspark.sql.functions import when, coalesce
 import logging
 log = logging.getLogger('core.transform.columns')
 
-def withEventName(df, name):
+def withEventName(df, evname):
     if "event_name" in df.columns:
         return df
     elif "name" in df.columns:
@@ -14,6 +14,6 @@ def withEventName(df, name):
         log.debug("Using column event as event_name")
         return df.withColumn('event_name', col('event'))
     
-    log.debug(f"Using  value lit {name} as event_name")
-    return df.withColumn('event_name', lit(name))
+    log.debug(f"Using  value lit {evname} as event_name")
+    return df.withColumn('event_name', lit(evname))
 

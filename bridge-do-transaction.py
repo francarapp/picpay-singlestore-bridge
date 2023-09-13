@@ -12,7 +12,7 @@ def conf():
     
 
 def main():
-    stream = BridgeUnion("track", "event_transaction", transactions=[
+    stream = BridgeTransactions("track", "event_transaction", transactions=[
         "transaction_accomplished",
         "transaction_delayed_approved",
         "transaction_invoiced",

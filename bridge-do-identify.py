@@ -13,7 +13,7 @@ def conf():
     args()
 
 def main():
-    stream = Bridge("identify", "identify")
+    stream = Bridge("identify", "event_identify")
     stream = stream.start()
     stream.awaitTermination()
 

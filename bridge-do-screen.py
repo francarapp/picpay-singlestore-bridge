@@ -11,7 +11,7 @@ def conf():
     initlog()
 
 def main():
-    stream = Bridge("screen", "screen")
+    stream = Bridge("screen", "event_screen")
     stream = stream.start()
     stream.awaitTermination()
 

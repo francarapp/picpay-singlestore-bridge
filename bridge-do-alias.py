@@ -12,7 +12,7 @@ def conf():
     args()
     
 def main():
-    stream = Bridge("alias", "alias")
+    stream = Bridge("alias", "event_alias")
     stream = stream.start()
     stream.awaitTermination()
 

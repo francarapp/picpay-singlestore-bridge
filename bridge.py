@@ -35,32 +35,30 @@ def Bridge(landing, table, partitions=[], console=False, debug=False):
     log.info("Streamming to SS")
     return SinkToSS(stream, table)
 
-
-def BridgeUnion(landing, table, transactions, console=False):   
+def BridgeTransactions(landing, table, transactions=[], console=False, debug=False):
+    ts = ','.join([f"'{t}'" for t in transactions])
     source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
-    # stream = Filter(
-    #     Shape(
-    #         Stream(source, partition = "event='button_clicked' and year=2023 and month=9 and day=12").union(
-    #             Stream(source, partition = "event='transaction_invoiced' and year=2023 and month=9 and day=12")
-    #         ) , landing, "track"
-    #     )
-    #  )
+    
+    log.info(f"Bridging from {source} to {table}")
     stream = Filter(
         Shape(
-            Stream(source, partition = "event=='button_clicked' and year==2023 and month==9 and day==12"), 
-            landing, "track"
-        )   
-    ) 
+            Stream(source, partition = f"event in ({ts})"), 
+            landing, 'transaction'
+        )
+    )
+    
     if console:
         log.info("Streamming to console")
         return SinkToConsole(stream)
     
+    if debug:
+        log.info("Streamming to SS using foreach")
+        return SinkForeachToSS(stream, table)
+    
     log.info("Streamming to SS")
     return SinkToSS(stream, table)
 
-
-
-def BridgeTransactions(landing, table, transactions, console=False):
+def BridgeUnionTransactions(landing, table, transactions, console=False):
     stream = None
     for transact in transactions:
         partitionedby = f"event=='{transact}'"

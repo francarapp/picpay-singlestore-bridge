@@ -109,6 +109,7 @@ def Shape(df, evgroup, name="UNDEFINED"):
 
 transactionJsonSchema = """
 {
+  "$schema": "http://json-schema.org/draft-04/schema#",    
   "type": "object",
   "properties": {
     "id": {

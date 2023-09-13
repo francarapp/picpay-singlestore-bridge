@@ -14,7 +14,9 @@ def conf():
 def main():
     stream = BridgeUnion("track", "event_transaction", transactions=[
         "transaction_accomplished",
-        "transaction_delayed_approved"
+        "transaction_delayed_approved",
+        "transaction_invoiced",
+        "button_viewed"
     ], console=True)
     stream = stream.start()
     stream.awaitTermination()

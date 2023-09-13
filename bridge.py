@@ -63,7 +63,7 @@ def BridgeUnion(landing, table, transactions, console=False):
 def BridgeTransactions(landing, table, transactions, console=False):
     stream = None
     for transact in transactions:
-        partitionedby = f"event={transact}"
+        partitionedby = f"event=='{transact}'"
         log.info(f"Using {landing} partition transaction {transact}")
         
         source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'

@@ -10,7 +10,6 @@ from datetime import datetime, timedelta
 
 def conf():
     initlog()
-    args()
 
 def main():
     stream = Bridge("identify", "event_identify")

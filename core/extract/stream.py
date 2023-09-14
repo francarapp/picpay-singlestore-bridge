@@ -53,7 +53,7 @@ def SinkToSS(stream, evgroup):
     return stream.writeStream.foreachBatch(saveSS)
 
 def SinkToCsv(stream, evgroup):
-    return stream.select('properties') \
+    return stream.select('event_name', 'properties') \
 	    .coalesce(1) \
 	    .writeStream \
 	    .option("checkpointLocation", f"/home/spark/checkpoint/{evgroup}") \

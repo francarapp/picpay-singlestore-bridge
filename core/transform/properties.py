@@ -7,9 +7,10 @@ def reshapeProperties(df, evname):
                 "buttom_action_action_upgrade" | "button_name" | "button_selected" |\
                 "button_toggled" | "button_viewed" | "button":
             return withElementName(
-                withProperties(df, ["button_name", "business_context", "screen_name", "provider"])
+                withProperties(df, [])
                     ,"button_name"
                 )
+# ["button_name", "business_context", "screen_name", "provider"]            
         case "banner_clicked" | "banner_viewed":
             return withElementName(
                 withProperties(df, ["banner_name", "business_context", "screen_name"])

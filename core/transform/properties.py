@@ -27,9 +27,44 @@ def reshapeProperties(df):
                 "properties", lambda k, v: k.isin(["carrousel_name", "business_context", "screen_name"])
             )                           
         ).\
-        when(col("event").isin(["dialog_clicked", "dialog_dismissed", "dialog_interacted", "dialog_option_selected", "dialog_viewed"]),
+        when(col("event").isin(["dialog_clicked", "dialog_dismissed", "dialog_interacted", "dialog_option_selected", "dialog_viewed", "dialog_option_selected"]),
             map_filter(
                 "properties", lambda k, v: k.isin(["dialog_name", "business_context", "screen_name"])
+            )                                  
+        ).\
+        when(col("event").isin(["feed_card_interacted"]), 
+            map_filter(
+                "properties", lambda k, v: k.isin(["card_id", "tab_name", "card_type", "interaction_type", "business_context", "screen_name"])
+            )                                  
+        ).\
+        when(col("event").isin(["feed_page_loaded"]), 
+            map_filter(
+                "properties", lambda k, v: k.isin(["tab_name", "pagination", "business_context", "screen_name"])
+            )                                  
+        ).\
+        when(col("event").isin(["filter_interacted"]), 
+            map_filter(
+                "properties", lambda k, v: k.isin(["business_context", "dialog_name", "filter_name", "interaction_type", "page_name", "user_id", "user_seller_id"])
+            )                                  
+        ).\
+        when(col("event").isin(["push_notification_opened", "push_notification_received", "push_notification_showed"]),
+            map_filter(
+                "properties", lambda k, v: k.isin(["notification_id", "push_type", "external_id", "external_orign", "notification_open_from", "campaign_id"])
+            )                                  
+        ).\
+        when(col("event").isin(["search_cleared", "search_started", "search_focused", "search_option_selected", "search_returned"]), 
+            map_filter(
+                "properties", lambda k, v: k.isin(["business_context", "screen_name", "bussiness_id", "search_api_version", "is_search_result_list_empty"])
+            )                                  
+        ).\
+        when(col("event").isin(["tab_clicked", "tab_selected", "tab_viewed"]), 
+            map_filter(
+                "properties", lambda k, v: k.isin(["tab_name", "pagination", "business_context", "screen_name"])
+            )                                  
+        ).\
+        when(col("event").isin(["user_signed_in", "user_signed_out", "user_signed_up"]), 
+            map_filter(
+                "properties", lambda k, v: k.isin(["business_context", "page_name", "user_id", "user_seller_id"])
             )                                  
         ).\
         otherwise(lit(None))

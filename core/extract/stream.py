@@ -10,10 +10,10 @@ log = logging.getLogger('core.extract.stream')
 # "s3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/track-events-approved/"
 
 def Stream(file, partition="", printSchema=False):
-    # dttm =  datetime.now() - timedelta(hours=1)
-    # return createStream(file, dttm.strftime("%Y-%m-%d %H:%M:%S.%f")[:23], partition)
-    strnow =  datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:10]
-    start = f'{strnow} 00:00:00.000'
+    #strnow =  datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:10]
+    #start = f'{strnow} 00:00:00.000'
+    dttm =  datetime.now() - timedelta(hours=2)
+    start = dttm.strftime("%Y-%m-%d %H:%M:%S.%f")[:23]
     log.info(f"Stream created with delta startingTimestamp: {start} to partition {partition}")
     return createStream(file, start, partition, printSchema)
 

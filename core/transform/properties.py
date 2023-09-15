@@ -1,11 +1,14 @@
 from pyspark.sql.functions import map_filter, lit, col
 
+import logging
+log = logging.getLogger('core.transform.properties')
 
 def reshapeProperties(df, evname):
     match evname:
         case 'button_clicked' | "bottom_sheet_accessed" | "bottom_sheet_item_clicked" | \
                 "buttom_action_action_upgrade" | "button_name" | "button_selected" |\
                 "button_toggled" | "button_viewed" | "button":
+            log.debug(f"Reshaping property {evname}")
             return withElementName(
                 withProperties(df, [])
                     ,"button_name"

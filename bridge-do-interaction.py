@@ -30,10 +30,11 @@ def main():
 	    "card_clicked",
 	    "card_interacted",
 	    "carousel_interacted",
-	    "carousel_viewed",
-	    "dialog_clicked",
-	    "dialog_dismissed",
-	    "dialog_interacted",
+     
+	    # "carousel_viewed",
+	    # "dialog_clicked",
+	    # "dialog_dismissed",
+	    # "dialog_interacted",
      
 	    # "dialog_option_select",
 	    # "dialog_option_selected",

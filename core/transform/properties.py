@@ -12,6 +12,26 @@ def reshapeProperties(df):
                 "properties", lambda k, v: k.isin(["button_name", "business_context", "screen_name", "provider"])
             )                                  
         ).\
+        when(col("event").isin(["banner_clicked", "banner_viewed"]), 
+            map_filter(
+                "properties", lambda k, v: k.isin(["banner_name", "business_context", "screen_name"])
+            )                                  
+        ).\
+        when(col("event").isin(["card_clicked"]), 
+            map_filter(
+                "properties", lambda k, v: k.isin(["card_clicked", "card_interacted", "interaction_type", "business_context", "screen_name"])
+            )                                  
+        ).\
+        when(col("event").isin(["carousel_interacted", "carousel_viewed"]), 
+            map_filter(
+                "properties", lambda k, v: k.isin(["carrousel_name", "business_context", "screen_name"])
+            )                           
+        ).\
+        when(col("event").isin(["dialog_clicked", "dialog_dismissed", "dialog_interacted", "dialog_option_selected", "dialog_viewed"]),
+            map_filter(
+                "properties", lambda k, v: k.isin(["dialog_name", "business_context", "screen_name"])
+            )                                  
+        ).\
         otherwise(lit(None))
     )
 
@@ -27,7 +47,7 @@ def old(df, evname):
                     ,"button_name"
                 )
 # ["button_name", "business_context", "screen_name", "provider"]            
-        case "banner_clicked" | "banner_viewed":
+        case "banner_clicked", "banner_viewed":
             return withElementName(
                 withProperties(df, ["banner_name", "business_context", "screen_name"])
                     ,"banner_name"
@@ -37,12 +57,12 @@ def old(df, evname):
                 withProperties(df, ["card_clicked", "card_interacted", "interaction_type", "business_context", "screen_name"])
                     ,"card_clicked"
                 )
-        case  "carousel_interacted" | "carousel_viewed":
+        case  "carousel_interacted", "carousel_viewed":
             return withElementName(
                 withProperties(df, ["carrousel_name", "business_context", "screen_name"])
                     ,"carrousel_name"
                 )
-        case "dialog_clicked" | "dialog_dismissed" | "dialog_interacted" | "dialog_option_selected" | "dialog_viewed":
+        case "dialog_clicked", "dialog_dismissed", "dialog_interacted", "dialog_option_selected", "dialog_viewed":
             return withElementName(
                 withProperties(df, ["dialog_name", "business_context", "screen_name"])
                     ,"dialog_name"
@@ -67,23 +87,23 @@ def old(df, evname):
                 withProperties(df, ["business_context", "dialog_name", "filter_name", "interaction_type", "page_name", "user_id", "user_seller_id"])
                     ,"filter_name"
                 )            
-        case "push_notification_opened" | "push_notification_received" | "push_notification_showed":
+        case "push_notification_opened", "push_notification_received", "push_notification_showed":
             return withElementName(
                 withProperties(df, ["notification_id", "push_type", "external_id", "external_orign", "notification_open_from", "campaign_id"])
                     ,"push_type"
                 )
-        case "search_cleared" | "search_started" | "search_focused" | "search_option_selected" | "search_returned":
+        case "search_cleared", "search_started", "search_focused", "search_option_selected", "search_returned":
             return withElementName(
                 withProperties(df, ["business_context", "screen_name", "bussiness_id", "search_api_version", "is_search_result_list_empty"])
                     ,"screen_name"
                 )
             
-        case "tab_clicked" | "tab_selected" | "tab_viewed":
+        case "tab_clicked", "tab_selected", "tab_viewed":
             return withElementName(
                 withProperties(df, ["tab_name", "pagination", "business_context", "screen_name"])
                     ,"tab_name"
                 )
-        case "user_signed_in" | "user_signed_out" | "user_signed_up":
+        case "user_signed_in", "user_signed_out", "user_signed_up":
             return withElementName(
                 withProperties(df, ["business_context", "page_name", "user_id", "user_seller_id"])
                     ,"page_name"

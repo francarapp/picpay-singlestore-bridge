@@ -5,17 +5,17 @@ log = logging.getLogger('core.transform.properties')
 
 def reshapeProperties(df):
     return df.withColumn( col("properties"),
-        when(col("event").isin(['button_clicked',"bottom_sheet_accessed","bottom_sheet_item_clicked", \
-                "buttom_action_action_upgrade","button_name","button_selected",\
-                "button_toggled","button_viewed","button"]), 
             map_filter(
                 "properties", lambda k, v: k.isin(["button_name", "business_context", "screen_name", "provider"])
-            )                          
-        ).\
-        otherwise(lit(None))
-        
+            )                                  
     )
 
+        # when(col("event").isin(['button_clicked',"bottom_sheet_accessed","bottom_sheet_item_clicked", \
+        #         "buttom_action_action_upgrade","button_name","button_selected",\
+        #         "button_toggled","button_viewed","button"]), 
+        # ).\
+        # otherwise(lit(None))
+             
 def old(df, evname):
     match evname:
         case 'button_clicked' | "bottom_sheet_accessed" | "bottom_sheet_item_clicked" | \

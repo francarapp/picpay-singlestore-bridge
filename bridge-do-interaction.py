@@ -71,7 +71,7 @@ def main():
 	    # "user_signed_in",
 	    # "user_signed_out",
 	    # "user_signed_up" 
-    ], console=True)
+    ], console=False)
     stream = stream.start()
     stream.awaitTermination()
 

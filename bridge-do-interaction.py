@@ -15,8 +15,9 @@ def main():
     stream = BridgeInnerEvents("track", "event_interaction", evgroup="interaction", events=[
         "button_clicked",
         "bottom_sheet_accessed",
-        "bottom_sheet_item_clicked",
-        "buttom_action_action_upgrade",
+        # "bottom_sheet_item_clicked",
+        # "buttom_action_action_upgrade",
+        
         # "button_name",
         # "button_selected",
         # "button_toggled",

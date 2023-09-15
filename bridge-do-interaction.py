@@ -16,8 +16,6 @@ def main():
         "button_clicked",
         "bottom_sheet_accessed",
         "bottom_sheet_item_clicked",
-        "bottom_sheet_accessed",
-        "bottom_sheet_item_clicked",
         "buttom_action_action_upgrade",
         "button_name",
         "button_selected",
@@ -25,12 +23,13 @@ def main():
         "button_viewed",
         "button",
         
-	    # "banner_clicked",
-	    # "banner_viewed",
+	    "banner_clicked",
+	    "banner_viewed",
+     
 	    # "card_clicked",
 	    # "card_interacted",
-	    # "carousel_interacted",
      
+	    # "carousel_interacted",
 	    # "carousel_viewed",
 	    # "dialog_clicked",
 	    # "dialog_dismissed",

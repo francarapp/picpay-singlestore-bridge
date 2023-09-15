@@ -3,14 +3,14 @@ from pyspark.sql.functions import map_filter, lit, col
 
 def reshapeProperties(df, evname):
     match evname:
-        case 'button_clicked', "bottom_sheet_accessed", "bottom_sheet_item_clicked", "bottom_sheet_accessed", \
-                "bottom_sheet_item_clicked", "buttom_action_action_upgrade", "button_name", "button_selected",\
-                "button_toggled", "button_viewed", "button":
+        case 'button_clicked' | "bottom_sheet_accessed" | "bottom_sheet_item_clicked" | \
+                "buttom_action_action_upgrade" | "button_name" | "button_selected" |\
+                "button_toggled" | "button_viewed" | "button":
             return withElementName(
                 withProperties(df, ["button_name", "business_context", "screen_name", "provider"])
                     ,"button_name"
                 )
-        case "banner_clicked", "banner_viewed":
+        case "banner_clicked" | "banner_viewed":
             return withElementName(
                 withProperties(df, ["banner_name", "business_context", "screen_name"])
                     ,"banner_name"

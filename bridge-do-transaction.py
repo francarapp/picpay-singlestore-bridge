@@ -2,7 +2,7 @@ from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 
 from core import session
-from bridge import BridgeUnionTransactions, BridgeTransactions
+from bridge import BridgeUnionTransactions, BridgeInnerEvents
 from conf import initlog
 
 from datetime import datetime, timedelta
@@ -12,7 +12,7 @@ def conf():
     
 
 def main():
-    stream = BridgeTransactions("track", "event_transaction", transactions=[
+    stream = BridgeInnerEvents("track", "event_transaction", evgroup="transaction", events=[
         "transaction_accomplished",
         "transaction_delayed_approved",
         "transaction_details_viewed",

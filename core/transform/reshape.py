@@ -8,7 +8,7 @@ from itertools import chain
 
 from .date import withDate, withTimeslice
 from .columns import withEventName
-from .properties import withProperties
+from .properties import reshapeProperties
 
 from datetime import datetime, timezone, timedelta
 
@@ -46,17 +46,22 @@ def withReshape(df, evgroup, evname):
                     )\
                 )
         case 'interaction':
-            df = df\
-                .withColumn('correlation_id', 
+            df = reshapeProperties(
+                df.withColumn('correlation_id', 
                     coalesce(
                         col('properties').getItem('correlation_id'),\
                         col('context').getItem('correlation_id'),\
                         lit(None)
                     )\
-                )
-            match evname:
-                case 'button_clicked':
-                    df = withProperties(df, ["business_context", "button_name", "screen_name", "provider"])
+                    ), 
+                evname)
+        case 'business':
+            df = df.withColumn('correlation_id', 
+                    coalesce(
+                        col('properties').getItem('correlation_id'),\
+                        col('context').getItem('correlation_id'),\
+                        lit(None)
+                    ))
         case other:
             df = df\
                 .withColumn('correlation_id', 

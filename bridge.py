@@ -35,15 +35,16 @@ def Bridge(landing, table, partitions=[], console=False, debug=False):
     log.info("Streamming to SS")
     return SinkToSS(stream, table)
 
-def BridgeTransactions(landing, table, transactions=[], console=False, debug=False):
-    ts = ','.join([f"'{t}'" for t in transactions])
+def BridgeInnerEvents(landing, table, events=[], evgroup=None, console=False, debug=False):
+    evgroup = landing if evgroup is None else evgroup
+    ts = ','.join([f"'{t}'" for t in events])
     source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
     
     log.info(f"Bridging from {source} to {table}")
     stream = Filter(
         Shape(
             Stream(source, partition = f"event in ({ts})"), 
-            landing, 'transaction'
+            landing, evgroup
         )
     )
     

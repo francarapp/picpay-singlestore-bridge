@@ -5,9 +5,9 @@ log = logging.getLogger('core.transform.properties')
 
 def reshapeProperties(df):
     return df.withColumn( col("properties"),
-        when(col("event_name") in ['button_clicked',"bottom_sheet_accessed","bottom_sheet_item_clicked", \
+        when(col("event_name").isin(['button_clicked',"bottom_sheet_accessed","bottom_sheet_item_clicked", \
                 "buttom_action_action_upgrade","button_name","button_selected",\
-                "button_toggled","button_viewed","button"], 
+                "button_toggled","button_viewed","button"]), 
              mapProperties(["button_name", "business_context", "screen_name", "provider"])  
         ).\
         otherwise(lit(None))

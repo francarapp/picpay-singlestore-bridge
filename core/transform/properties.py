@@ -4,7 +4,7 @@ import logging
 log = logging.getLogger('core.transform.properties')
 
 def reshapeProperties(df):
-    return df.withColumn( col("properties"),
+    return df.withColumn( "properties",
             map_filter(
                 "properties", lambda k, v: k.isin(["button_name", "business_context", "screen_name", "provider"])
             )                                  

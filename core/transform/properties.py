@@ -66,10 +66,13 @@ def reshapeProperties(df, evname):
                 withProperties(df, ["tab_name", "pagination", "business_context", "screen_name"])
                     ,"tab_name"
                 )
-            
+        case "user_signed_in", "user_signed_out", "user_signed_up":
+            return withElementName(
+                withProperties(df, ["business_context", "page_name", "user_id", "user_seller_id"])
+                    ,"page_name"
+                )
         case other:
             return df
-
 
 
 def withElementName(df, elname):

@@ -25,11 +25,11 @@ def main():
         "button_viewed",
         "button",
         
-	    "banner_clicked",
-	    "banner_viewed",
-	    "card_clicked",
-	    "card_interacted",
-	    "carousel_interacted",
+	    # "banner_clicked",
+	    # "banner_viewed",
+	    # "card_clicked",
+	    # "card_interacted",
+	    # "carousel_interacted",
      
 	    # "carousel_viewed",
 	    # "dialog_clicked",

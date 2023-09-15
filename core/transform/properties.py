@@ -1,10 +1,20 @@
-from pyspark.sql.functions import map_filter, lit, col
+from pyspark.sql.functions import map_filter, lit, col, when
 
 import logging
 log = logging.getLogger('core.transform.properties')
 
-def reshapeProperties(df, evname):
-    log.debug(f"Preparing property reshape {evname}")
+def reshapeProperties(df):
+    return df.withColumn( col("properties"),
+        when(col("event_name") in ['button_clicked',"bottom_sheet_accessed","bottom_sheet_item_clicked", \
+                "buttom_action_action_upgrade","button_name","button_selected",\
+                "button_toggled","button_viewed","button"], 
+             mapProperties(["button_name", "business_context", "screen_name", "provider"])  
+        ).\
+        otherwise(lit(None))
+        
+    )
+
+def old(df, evname):
     match evname:
         case 'button_clicked' | "bottom_sheet_accessed" | "bottom_sheet_item_clicked" | \
                 "buttom_action_action_upgrade" | "button_name" | "button_selected" |\
@@ -86,4 +96,9 @@ def withElementName(df, elname):
 def withProperties(df, columns):
     return df.withColumn("properties", map_filter(
         "properties", lambda k, v: k.isin(columns))
+    )
+
+def mapProperties(columns):
+    return map_filter(
+        "properties", lambda k, v: k.isin(columns)
     )

@@ -53,8 +53,8 @@ def withReshape(df, evgroup, evname):
                         col('context').getItem('correlation_id'),\
                         lit(None)
                     )\
-                    ), 
-                evname)
+                    ) 
+                )
         case 'business':
             df = df.withColumn('correlation_id', 
                     coalesce(
@@ -62,6 +62,7 @@ def withReshape(df, evgroup, evname):
                         col('context').getItem('correlation_id'),\
                         lit(None)
                     ))
+            
         case other:
             df = df\
                 .withColumn('correlation_id', 

@@ -8,7 +8,9 @@ def reshapeProperties(df):
         when(col("event").isin(['button_clicked',"bottom_sheet_accessed","bottom_sheet_item_clicked", \
                 "buttom_action_action_upgrade","button_name","button_selected",\
                 "button_toggled","button_viewed","button"]), 
-             mapProperties(["button_name", "business_context", "screen_name", "provider"])  
+            map_filter(
+                "properties", lambda k, v: k.isin(["button_name", "business_context", "screen_name", "provider"])
+            )                          
         ).\
         otherwise(lit(None))
         

@@ -44,7 +44,7 @@ def BridgeInnerEvents(landing, table, events=[], evgroup=None, console=False, de
     stream = Filter(
         Shape(
             Stream(source, partition = f"event in ({ts})"), 
-            landing, evgroup
+            evgroup
         )
     )
     

@@ -4,6 +4,7 @@ import logging
 log = logging.getLogger('core.transform.properties')
 
 def reshapeProperties(df, evname):
+    log.debug(f"Preparing property reshape {evname}")
     match evname:
         case 'button_clicked' | "bottom_sheet_accessed" | "bottom_sheet_item_clicked" | \
                 "buttom_action_action_upgrade" | "button_name" | "button_selected" |\

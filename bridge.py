@@ -40,7 +40,7 @@ def BridgeInnerEvents(landing, table, events=[], evgroup=None, console=False, de
     ts = ','.join([f"'{t}'" for t in events])
     source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
     
-    log.info(f"Bridging from {source} to {table}")
+    log.info(f"Bridging from {source} to {table} in group {evgroup}")
     stream = Filter(
         Shape(
             Stream(source, partition = f"event in ({ts})"), 

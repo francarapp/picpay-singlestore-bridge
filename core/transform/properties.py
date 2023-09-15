@@ -45,6 +45,22 @@ def reshapeProperties(df, evname):
                 withProperties(df, ["tab_name", "pagination", "business_context", "screen_name"])
                     ,"tab_name"
                 )
+        case "filter_interacted":
+            return withElementName(
+                withProperties(df, ["business_context", "dialog_name", "filter_name", "interaction_type", "page_name", "user_id", "user_seller_id"])
+                    ,"filter_name"
+                )            
+        case "push_notification_opened", "push_notification_received", "push_notification_showed":
+            return withElementName(
+                withProperties(df, ["notification_id", "push_type", "external_id", "external_orign", "notification_open_from", "campaign_id"])
+                    ,"push_type"
+                )
+        case "search_cleared", "search_started", "search_focused", "search_option_selected", "search_returned":
+            return withElementName(
+                withProperties(df, ["business_context", "screen_name", "bussiness_id", "search_api_version", "is_search_result_list_empty"])
+                    ,"screen_name"
+                )
+            
         case "tab_clicked", "tab_selected", "tab_viewed":
             return withElementName(
                 withProperties(df, ["tab_name", "pagination", "business_context", "screen_name"])
@@ -57,7 +73,7 @@ def reshapeProperties(df, evname):
 
 
 def withElementName(df, elname):
-    return df.withColumn('interaction_element_name', lit(elname))
+    return df.withColumn('interaction_element_name', col(elname))
 
 def withProperties(df, columns):
     return df.withColumn("properties", map_filter(

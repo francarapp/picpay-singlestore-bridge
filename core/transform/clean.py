@@ -17,15 +17,28 @@ def Clean(stream, excludes=[]):
             replaceAspasParenteses(
                 replaceDuplasBarras(
                     stream
-                )
+                ), excludes=excludes
             ), excludes=excludes
         )
     
 
-def replaceAspasParenteses(df):
-    return df.withColumn("properties", F.regexp_replace('properties', '\:\s*\"\s*\[', ':[')) \
-        .withColumn("properties", F.regexp_replace('properties', '\]\s*\"\s*,', '],')) \
-        .withColumn("properties", F.regexp_replace('properties', '\]\s*\"\s*}', ']}')) 
+def replaceAspasParenteses(df, excludes=[]):
+    return df\
+        .withColumn("properties", 
+            when(
+                ~col('event_name').isin(excludes), 
+                F.regexp_replace('properties', '\:\s*\"\s*\[', ':[')
+            ).otherwise(col('properties')))\
+        .withColumn("properties", 
+            when(
+                ~col('event_name').isin(excludes), 
+                F.regexp_replace('properties', '\]\s*\"\s*,', '],')
+            ).otherwise(col('properties')))\
+        .withColumn("properties", 
+            when(
+                ~col('event_name').isin(excludes), 
+                F.regexp_replace('properties', '\]\s*\"\s*}', ']}')
+            ).otherwise(col('properties')))    
 
 
 def replaceAspasColchetes(df, excludes=[]):

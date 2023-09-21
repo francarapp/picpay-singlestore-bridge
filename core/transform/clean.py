@@ -2,7 +2,7 @@
 import pyspark.sql.functions as F
 import pyspark.sql.types as T
 from pyspark.sql.functions import regexp_replace
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, when
 
 
 def reencode(df):
@@ -12,13 +12,13 @@ def reencode(df):
     	'\'', ''))
 	return df
 
-def Clean(stream):
+def Clean(stream, excludes=[]):
     return replaceAspasColchetes(
             replaceAspasParenteses(
                 replaceDuplasBarras(
                     stream
                 )
-            )
+            ), excludes=excludes
         )
     
 
@@ -28,11 +28,23 @@ def replaceAspasParenteses(df):
         .withColumn("properties", F.regexp_replace('properties', '\]\s*\"\s*}', ']}')) 
 
 
-def replaceAspasColchetes(df):
+def replaceAspasColchetes(df, excludes=[]):
     return df\
-        .withColumn("properties", F.regexp_replace('properties', '\:\s*\"\s*\{', ':{')) \
-        .withColumn("properties", F.regexp_replace('properties', '\}\s*\"\s*,', '},')) \
-        .withColumn("properties", F.regexp_replace('properties', '\}\s*\"\s*}', '}}')) 
+        .withColumn("properties", 
+            when(
+                ~col('event_name').isin(excludes), 
+                F.regexp_replace('properties', '\:\s*\"\s*\{', ':{')
+            ).otherwise(col('properties')))\
+        .withColumn("properties", 
+            when(
+                ~col('event_name').isin(excludes), 
+                F.regexp_replace('properties', '\}\s*\"\s*,', '},')                
+            ).otherwise(col('properties')))\
+        .withColumn("properties", 
+            when(
+                ~col('event_name').isin(excludes), 
+                F.regexp_replace('properties', '\}\s*\"\s*}', '}}')
+            ).otherwise(col('properties')))
 
 
 def replaceDuplasAspas(df):

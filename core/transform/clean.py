@@ -16,7 +16,9 @@ def Clean(stream):
     return replaceDuplasAspas(
         replaceAspasColchetes(
             replaceAspasParenteses(
-                stream
+                replaceDuplasBarras(
+                    stream
+                )
             )
         )
     )
@@ -36,3 +38,7 @@ def replaceAspasColchetes(df):
 def replaceDuplasAspas(df):
     return df.withColumn("properties", F.regexp_replace('properties', ':\s*\"\"\s*[^,]', ':\"'))\
         .withColumn("properties", F.regexp_replace('properties', '[^:]\s*\"\",', '\",')) 
+
+def replaceDuplasBarras(df):
+    return df.withColumn('properties', 
+            F.regexp_replace('properties', '(\\\)*"', '"'))

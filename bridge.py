@@ -1,5 +1,5 @@
 from core.extract import Stream, SinkToSS, SinkToConsole, SinkForeachToSS
-from core.transform import  Shape
+from core.transform import  Shape, Clean
 from core.filter import Filter
 from conf import partitionby, partitionEvName
 
@@ -18,10 +18,10 @@ def Bridge(landing, table, partitions=[], console=False, debug=False):
     
     log.info(f"Bridging from {source} to {table}")
     stream = Filter(
-        Shape(
+        Clean(Shape(
             Stream(source, partition = partitionedby), 
             landing, evname
-        )
+        ))
     )
     
     if console:
@@ -42,10 +42,10 @@ def BridgeInnerEvents(landing, table, events=[], evgroup=None, console=False, de
     
     log.info(f"Bridging from {source} to {table} in group {evgroup}")
     stream = Filter(
-        Shape(
+        Clean(Shape(
             Stream(source, partition = f"event in ({ts})"), 
             evgroup
-        )
+        ))
     )
     
     if console:
@@ -55,31 +55,6 @@ def BridgeInnerEvents(landing, table, events=[], evgroup=None, console=False, de
     if debug:
         log.info("Streamming to SS using foreach")
         return SinkForeachToSS(stream, table)
-    
-    log.info("Streamming to SS")
-    return SinkToSS(stream, table)
-
-def BridgeUnionTransactions(landing, table, transactions, console=False):
-    stream = None
-    for transact in transactions:
-        partitionedby = f"event=='{transact}'"
-        log.info(f"Using {landing} partition transaction {transact}")
-        
-        source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
-    
-        log.info(f"Bridging {transact} transactions from {source} to {table}")
-        transactStream = Filter(
-            Shape(
-                Stream(source, partition = partitionedby), 
-                landing, transact
-            )
-        )        
-        stream = stream.union(transactStream) if stream is not None else transactStream
-    
-    
-    if console:
-        log.info("Streamming to console")
-        return SinkToConsole(stream)
     
     log.info("Streamming to SS")
     return SinkToSS(stream, table)

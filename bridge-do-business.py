@@ -2,7 +2,7 @@ from pyspark import SparkContext
 from pyspark.streaming import StreamingContext
 
 from core import session
-from bridge import BridgeUnionTransactions, BridgeInnerEvents
+from bridge import BridgeInnerEvents
 from conf import initlog
 
 from datetime import datetime, timedelta

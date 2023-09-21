@@ -6,7 +6,7 @@ from conf import partitionby, partitionEvName
 import logging
 log = logging.getLogger(__name__)
 
-def Bridge(landing, table, partitions=[], console=False, debug=False):
+def Bridge(landing, table, partitions=[], console=False, debug=False, notclean=[]):
     partitionedby = ""
     evname = landing
     if len(partitions) > 0:
@@ -21,7 +21,7 @@ def Bridge(landing, table, partitions=[], console=False, debug=False):
         Clean(Shape(
             Stream(source, partition = partitionedby), 
             landing, evname
-        ))
+        ), notclean)
     )
     
     if console:
@@ -35,7 +35,7 @@ def Bridge(landing, table, partitions=[], console=False, debug=False):
     log.info("Streamming to SS")
     return SinkToSS(stream, table)
 
-def BridgeInnerEvents(landing, table, events=[], evgroup=None, console=False, debug=False):
+def BridgeInnerEvents(landing, table, events=[], evgroup=None, console=False, debug=False, notclean=[]):
     evgroup = landing if evgroup is None else evgroup
     ts = ','.join([f"'{t}'" for t in events])
     source = f's3a://picpay-datalake-stream-landing/sparkstreaming/et/raw/{landing}-events-approved/'
@@ -45,7 +45,7 @@ def BridgeInnerEvents(landing, table, events=[], evgroup=None, console=False, de
         Clean(Shape(
             Stream(source, partition = f"event in ({ts})"), 
             evgroup
-        ))
+        ), notclean)
     )
     
     if console:

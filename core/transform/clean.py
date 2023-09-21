@@ -13,7 +13,7 @@ def reencode(df):
 	return df
 
 def Clean(stream):
-    return replaceDuplasAspas(
+    return replaceAspasColchetes(
             replaceAspasParenteses(
                 replaceDuplasBarras(
                     stream
@@ -29,7 +29,8 @@ def replaceAspasParenteses(df):
 
 
 def replaceAspasColchetes(df):
-    return df.withColumn("properties", F.regexp_replace('properties', '\:\s*\"\s*\{', ':{')) \
+    return df\
+        .withColumn("properties", F.regexp_replace('properties', '\:\s*\"\s*\{', ':{')) \
         .withColumn("properties", F.regexp_replace('properties', '\}\s*\"\s*,', '},')) \
         .withColumn("properties", F.regexp_replace('properties', '\}\s*\"\s*}', '}}')) 
 

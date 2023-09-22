@@ -55,7 +55,7 @@ def main():
         "transaction_status_changed_error",
         "transaction_status_changed",
         "transaction_watson_executed"
-    ], console=False, notclean=['transaction_movement_failed'])
+    ], console=False, excludesCleanColchetes=['transaction_movement_failed'], excludesCleanChaves=[])
     stream = stream.start()
     stream.awaitTermination()
 

@@ -12,13 +12,13 @@ def reencode(df):
     	'\'', ''))
 	return df
 
-def Clean(stream, excludes=[]):
+def Clean(stream, excludesColchetes=[], excludesChaves=[]):
     return replaceAspasColchetes(
             replaceAspasParenteses(
                 replaceDuplasBarras(
                     stream
-                ), excludes=excludes
-            ), excludes=excludes
+                ), excludes=excludesColchetes
+            ), excludes=excludesChaves
         )
     
 

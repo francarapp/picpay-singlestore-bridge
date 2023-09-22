@@ -13,8 +13,8 @@ def reencode(df):
 	return df
 
 def Clean(stream, excludesColchetes=[], excludesChaves=[]):
-    return replaceAspasColchetes(
-            replaceAspasParenteses(
+    return replaceAspasChaves(
+            replaceAspasColchetes(
                 replaceDuplasBarras(
                     stream
                 ), excludes=excludesColchetes
@@ -22,7 +22,7 @@ def Clean(stream, excludesColchetes=[], excludesChaves=[]):
         )
     
 
-def replaceAspasParenteses(df, excludes=[]):
+def replaceAspasColchetes(df, excludes=[]):
     return df\
         .withColumn("properties", 
             when(
@@ -41,7 +41,7 @@ def replaceAspasParenteses(df, excludes=[]):
             ).otherwise(col('properties')))    
 
 
-def replaceAspasColchetes(df, excludes=[]):
+def replaceAspasChaves(df, excludes=[]):
     return df\
         .withColumn("properties", 
             when(
